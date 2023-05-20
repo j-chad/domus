@@ -8,8 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/diesel.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/db/migrations/.keep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/connection.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +67,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "language.rust.cargo.check",
+    "settings.editor.selected.configurable": "reference.settingsDialog.application.dockerMachine",
     "ts.external.directory.path": "/home/jchad/Code/domus/web/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -73,6 +81,7 @@
       <recent name="$PROJECT_DIR$/backend/src/api/user" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/db" />
       <recent name="$PROJECT_DIR$/web/src/components/common" />
       <recent name="$PROJECT_DIR$/backend" />
     </key>
@@ -81,7 +90,7 @@
     <option name="runOnTheFly" value="true" />
     <option name="tool" value="Clippy" />
   </component>
-  <component name="RunManager" selected="Cargo.Run backend">
+  <component name="RunManager" selected="Docker.backend: Compose Deployment">
     <configuration name="Run backend" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="command" value="run --package backend --bin backend" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/backend" />
@@ -99,6 +108,18 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
+    <configuration name="backend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="backend/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="web (dev)" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/web/package.json" />
       <command value="run" />
@@ -109,8 +130,14 @@
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Cargo.Run backend" />
+      <item itemvalue="Docker.backend: Compose Deployment" />
+      <item itemvalue="npm.web (dev)" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.backend: Compose Deployment" />
         <item itemvalue="Cargo.Run backend" />
       </list>
     </recent_temporary>
@@ -134,7 +161,7 @@
       <workItem from="1684546276247" duration="770000" />
       <workItem from="1684547051344" duration="2721000" />
       <workItem from="1684554197145" duration="4621000" />
-      <workItem from="1684608697368" duration="2463000" />
+      <workItem from="1684608697368" duration="4030000" />
     </task>
     <servers />
   </component>
