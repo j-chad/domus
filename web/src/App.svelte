@@ -1,7 +1,7 @@
 <script lang="ts">
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '../public/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import Counter from './components/common/Counter.svelte'
 </script>
 
 <main>

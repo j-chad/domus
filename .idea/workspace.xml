@@ -8,31 +8,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/web/.nvmrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/home/controller.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/home/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/home/model.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/home/service.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/user/controller.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/user/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/user/model.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/user/service.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/db/connection.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/db/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/db/model.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/lib.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/components/layout/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/components/pages/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/routes/.gitkeep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/web/web.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/web/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/web/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/web/public/vite.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/src/App.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/App.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/src/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/src/assets/svelte.svg" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/assets/svelte.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/src/lib/Counter.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/Counter.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/main.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/vite-env.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/svelte.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/svelte.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/tsconfig.node.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/tsconfig.node.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/web/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/App.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/App.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/lib/Counter.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/common/Counter.svelte" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,7 +63,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/jchad/Code/domus/web",
+    "last_opened_file_path": "/home/jchad/Code/domus/web/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -74,7 +81,15 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/web/src" />
+      <recent name="$PROJECT_DIR$/web/src/components" />
+      <recent name="$PROJECT_DIR$/backend/src/api" />
+      <recent name="$PROJECT_DIR$/backend/src/db" />
+      <recent name="$PROJECT_DIR$/backend/src/api/user" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/web/src/components/common" />
       <recent name="$PROJECT_DIR$/backend" />
     </key>
   </component>
@@ -141,23 +156,12 @@
       <workItem from="1684545690652" duration="578000" />
       <workItem from="1684546276247" duration="770000" />
       <workItem from="1684547051344" duration="2721000" />
-      <workItem from="1684554197145" duration="392000" />
+      <workItem from="1684554197145" duration="1392000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/web/src/App.svelte</url>
-          <line>1</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
