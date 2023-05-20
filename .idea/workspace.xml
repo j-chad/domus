@@ -8,10 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/model.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/service.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/services/.gitkeep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/.eslintrc.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/web/.eslintrc.cjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/lib/guards/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/guards/auth.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +56,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/jchad/Code/domus/web/src/components",
+    "last_opened_file_path": "/home/jchad/Code/domus/backend/src/api",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -68,9 +76,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/web/src/components" />
-      <recent name="$PROJECT_DIR$/web/src" />
       <recent name="$PROJECT_DIR$/backend/src/api" />
+      <recent name="$PROJECT_DIR$/web/src" />
+      <recent name="$PROJECT_DIR$/web/src/components" />
       <recent name="$PROJECT_DIR$/backend/src/db" />
       <recent name="$PROJECT_DIR$/backend/src/api/user" />
     </key>
@@ -83,7 +91,24 @@
     <option name="runOnTheFly" value="true" />
     <option name="tool" value="Clippy" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Cargo.Run backend">
+    <configuration name="Run backend" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="run --package backend --bin backend" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/backend" />
+      <option name="emulateTerminal" value="false" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <envs />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="web (dev)" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/web/package.json" />
       <command value="run" />
@@ -94,6 +119,11 @@
       <envs />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Cargo.Run backend" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
@@ -114,6 +144,7 @@
       <workItem from="1684546276247" duration="770000" />
       <workItem from="1684547051344" duration="2721000" />
       <workItem from="1684554197145" duration="4621000" />
+      <workItem from="1684608697368" duration="1958000" />
     </task>
     <servers />
   </component>
