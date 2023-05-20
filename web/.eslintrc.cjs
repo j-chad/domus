@@ -1,6 +1,8 @@
 module.exports = {
 	root: true,
 	extends: [
+		'hardcore',
+		'hardcore/ts',
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:@typescript-eslint/recommended-requiring-type-checking',
