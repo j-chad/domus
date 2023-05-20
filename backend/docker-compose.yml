@@ -5,8 +5,8 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: domus
     ports:
       - "5432:5432"
