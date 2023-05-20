@@ -8,14 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/web/src/components/.gitkeep" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/lib/.gitkeep" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/params/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/guards/auth.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/guards/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/routes/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/svelte.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/svelte.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/.eslintrc.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/web/.eslintrc.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
