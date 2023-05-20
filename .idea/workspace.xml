@@ -8,18 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/model.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/service.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/services/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/lib/guards/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/lib/guards/auth.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +134,7 @@
       <workItem from="1684546276247" duration="770000" />
       <workItem from="1684547051344" duration="2721000" />
       <workItem from="1684554197145" duration="4621000" />
-      <workItem from="1684608697368" duration="1958000" />
+      <workItem from="1684608697368" duration="2463000" />
     </task>
     <servers />
   </component>
