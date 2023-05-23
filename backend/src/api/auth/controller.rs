@@ -1,10 +1,14 @@
 use crate::api::auth::model::RegisterNewUser;
 use actix_web::*;
-use crate::db::models::user::create_user;
+use validator::Validate;
 
-#[get("/register")]
-pub async fn register(user: web::Json<RegisterNewUser>) -> impl Responder {
-    create_user(user);
+#[post("/register")]
+pub async fn register(user: web::Json<RegisterNewUser>) -> HttpResponse {
+    let val_result = user.validate();
+    if let Err(e) = val_result {
+        return HttpResponse::BadRequest().json(e);
+    }
 
-    HttpResponse::NoContent()
+    println!("Registering new user: {:?}", user);
+    HttpResponse::NoContent().finish()
 }
