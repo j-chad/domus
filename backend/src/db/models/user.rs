@@ -22,9 +22,8 @@ pub struct NewUser<'a> {
     pub password: &'a str,
 }
 
-pub fn create_user(conn: &mut PgConnection, user: NewUser) -> User {
+pub fn create_user(conn: &mut PgConnection, user: NewUser) -> QueryResult<User> {
     diesel::insert_into(schema::users::table)
         .values(&user)
         .get_result(conn)
-        .expect("Error saving new post")
 }
