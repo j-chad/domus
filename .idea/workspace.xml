@@ -8,13 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/api/shared/json_error_handler.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api/shared/errors.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/api_response.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/shared/api_response.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/shared/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/service.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/service.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +126,7 @@
       <workItem from="1684554197145" duration="4621000" />
       <workItem from="1684608697368" duration="4030000" />
       <workItem from="1684861730641" duration="10491000" />
-      <workItem from="1684943446469" duration="5390000" />
+      <workItem from="1684943446469" duration="6689000" />
     </task>
     <servers />
   </component>
