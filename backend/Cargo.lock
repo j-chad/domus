@@ -272,6 +272,7 @@ dependencies = [
  "env_logger",
  "log",
  "serde",
+ "serde_json",
  "uuid",
  "validator",
 ]
