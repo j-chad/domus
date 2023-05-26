@@ -1,7 +1,6 @@
 use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
-use backend::api;
-use backend::db;
+use domus_backend::{api, db};
 use dotenvy::dotenv;
 use env_logger::Env;
 use log::info;
