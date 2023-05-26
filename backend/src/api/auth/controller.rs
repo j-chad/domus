@@ -1,8 +1,15 @@
-use crate::api::auth::model::RegisterNewUser;
+use super::model::RegisterNewUser;
 use actix_web::*;
 use log;
 use validator::Validate;
 
+#[utoipa::path(
+    responses(
+        (status = 204, description="User registered successfully"),
+    ),
+    request_body = RegisterNewUser,
+    tag="Auth"
+)]
 #[post("/register")]
 pub async fn register(user: web::Json<RegisterNewUser>) -> HttpResponse {
     log::trace!("Registering new user: {:?}", user);

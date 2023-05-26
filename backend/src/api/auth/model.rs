@@ -1,7 +1,8 @@
 use serde::Deserialize;
+use utoipa::ToSchema;
 use validator::Validate;
 
-#[derive(Deserialize, Validate, Debug)]
+#[derive(Deserialize, Validate, ToSchema, Debug)]
 pub struct RegisterNewUser {
     #[validate(email)]
     email: String,
