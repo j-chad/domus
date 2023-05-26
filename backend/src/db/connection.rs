@@ -1,8 +1,14 @@
-use diesel::{Connection, PgConnection};
+use diesel::PgConnection;
+use r2d2;
 use std::env;
 
-pub fn establish_connection() -> PgConnection {
+pub(crate) type DbPool = r2d2::Pool<diesel::r2d2::ConnectionManager<PgConnection>>;
+
+pub fn establish_connection() -> DbPool {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+    let manager = diesel::r2d2::ConnectionManager::<PgConnection>::new(database_url);
+
+    r2d2::Pool::builder()
+        .build(manager)
+        .expect("Failed to create pool.")
 }

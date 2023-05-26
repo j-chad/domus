@@ -1,13 +1,21 @@
 use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
 use backend::api;
+use backend::db;
+use dotenvy::dotenv;
 use env_logger::Env;
+use log::info;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
+
+    db::connection::establish_connection();
+
+    info!("Starting server at http://localhost:8080");
 
     HttpServer::new(|| {
         App::new()
