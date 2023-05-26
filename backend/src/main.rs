@@ -13,13 +13,14 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
-    db::connection::establish_connection();
+    let pool = db::connection::establish_connection();
 
     info!("Starting server at http://localhost:8080");
 
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
+            .app_data(web::Data::new(pool.clone()))
             .service(SwaggerUi::new("/swagger-ui/{_:.*}").url(
                 "/v1/api-docs/openapi.json",
                 api::api_docs::ApiDocs::openapi(),
