@@ -36,21 +36,21 @@ pub async fn register_user(
 
 pub async fn login_user(
     pool: web::Data<DbPool>,
-    user: LoginUser,
+    login: LoginUser,
 ) -> Result<AuthResponse, APIError> {
     let user = web::block(move || {
         // Obtaining a connection from the pool is also a potentially blocking operation.
         // So, it should be called within the `web::block` closure, as well.
         let mut conn = get_connection(pool)?;
 
-        find_user_by_email(&mut conn, &user.email)
+        find_user_by_email(&mut conn, &login.email)
             .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))
     })
     .await
     .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))?;
 
     let password_matches: bool = match user {
-        Ok(ref user) => verify_password(&user.password, &user.password).is_ok(),
+        Ok(ref user) => verify_password(&login.password, &user.password).is_ok(),
         _ => {
             // Prevent timing side channel attacks by always taking the same amount of time to verify a password.
             let _ = verify_password("", "").is_ok();

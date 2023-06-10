@@ -8,25 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/utils/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/api/auth/utils/tokens.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Backend.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Backend.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/api_docs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/api_docs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/model.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/api/auth/service.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/service.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/api_response.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/shared/api_response.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/errors.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/shared/errors.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/json_error_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/shared/json_error_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/shared/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/connection.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/models/user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/models/user.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,19 +89,19 @@
     <option name="runOnTheFly" value="true" />
     <option name="tool" value="Clippy" />
   </component>
-  <component name="RunManager" selected="Cargo.Backend">
+  <component name="RunManager">
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="Backend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="envFilePath" value="" />
           <option name="sourceFilePath" value="backend/docker-compose.yml" />
         </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
-      <deployment type="docker-compose.yml">
-        <settings />
       </deployment>
       <method v="2" />
     </configuration>
@@ -131,13 +114,6 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Cargo.Backend" />
-      <item itemvalue="Cargo.Backend Watch" />
-      <item itemvalue="Docker.backend: Compose Deployment" />
-      <item itemvalue="Docker.Backend: Compose Deployment" />
-      <item itemvalue="npm.Web (dev)" />
-    </list>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
