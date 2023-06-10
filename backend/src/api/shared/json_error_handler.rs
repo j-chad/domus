@@ -1,34 +1,36 @@
-use crate::api::shared::api_response::Response;
-use actix_web::error::{InternalError, JsonPayloadError};
+use crate::api::shared::errors::APIError;
+use actix_web::error::JsonPayloadError;
 use log::error;
-use serde_json::error::Category;
-use serde_json::Error as JsonError;
-
-pub fn handle_json_error(err: JsonPayloadError) -> InternalError<JsonPayloadError> {
-    let response = get_response(&err);
-    InternalError::from_response(err, response.into())
+pub fn handle_json_error(err: JsonPayloadError) -> APIError {
+    get_response(err)
 }
 
-fn get_response(err: &JsonPayloadError) -> Response<String> {
+fn get_response(err: JsonPayloadError) -> APIError {
     match err {
         JsonPayloadError::OverflowKnownLength { .. }
         | JsonPayloadError::Overflow { .. }
-        | JsonPayloadError::ContentType => Response::fail(err.to_string(), None),
-        JsonPayloadError::Deserialize(e) => get_json_error_message(e),
-        JsonPayloadError::Serialize(_) => {
-            Response::error("failed to serialize response".to_string(), None, None)
-        }
-        JsonPayloadError::Payload(e) => Response::fail(e.to_string(), None),
+        | JsonPayloadError::ContentType => APIError {
+            code: actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            message: Some(err.to_string()),
+        },
+        JsonPayloadError::Deserialize(e) => APIError {
+            code: actix_web::http::StatusCode::BAD_REQUEST,
+            message: Some(e.to_string()),
+        },
+        JsonPayloadError::Serialize(_) => APIError {
+            code: actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            message: Some("failed to serialize response".to_string()),
+        },
+        JsonPayloadError::Payload(e) => APIError {
+            code: actix_web::http::StatusCode::BAD_REQUEST,
+            message: Some(e.to_string()),
+        },
         _ => {
             error!("Unhandled JsonPayloadError: {:?}", err);
-            Response::error("an unknown error occurred".to_string(), None, None)
+            APIError {
+                code: actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+                message: None,
+            }
         }
-    }
-}
-
-fn get_json_error_message(err: &JsonError) -> Response<String> {
-    match err.classify() {
-        Category::Io => Response::error(err.to_string(), None, None),
-        Category::Syntax | Category::Eof | Category::Data => Response::fail(err.to_string(), None),
     }
 }

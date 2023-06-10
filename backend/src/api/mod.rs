@@ -3,7 +3,7 @@ use utoipa::openapi::{Info, OpenApi, OpenApiBuilder, Server};
 
 pub mod api_docs;
 pub mod auth;
-mod shared;
+pub mod shared;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     let mut api_docs: OpenApi = OpenApiBuilder::new()

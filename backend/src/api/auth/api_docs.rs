@@ -20,8 +20,8 @@ impl Modify for AuthScopeAddon {
 
 #[derive(OpenApiTrait)]
 #[openapi(
-    paths(controller::register),
-    components(schemas(model::RegisterNewUser)),
+    paths(controller::register, controller::login),
+    components(schemas(model::RegisterNewUser, model::LoginUser, model::AuthResponse)),
     modifiers(&AuthScopeAddon),
     tags((name="Auth", description="Endpoints for authentication and user management"))
 )]

@@ -22,3 +22,4 @@ utoipa = { version = "3", features = ["actix_extras", "uuid", "chrono"] }
 utoipa-swagger-ui = { version = "3", features = ["actix-web"] }
 r2d2 = "0.8.10"
 dotenvy = "0.15.7"
+jsonwebtoken = "8"

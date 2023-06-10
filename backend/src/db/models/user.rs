@@ -27,3 +27,9 @@ pub fn create_user(conn: &mut PgConnection, user: NewUser) -> QueryResult<User> 
         .values(&user)
         .get_result(conn)
 }
+
+pub fn find_user_by_email(conn: &mut PgConnection, email: &str) -> QueryResult<User> {
+    schema::users::table
+        .filter(schema::users::email.eq(email))
+        .first(conn)
+}
