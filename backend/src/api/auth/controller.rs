@@ -51,3 +51,15 @@ pub async fn login(
 
     Ok(HttpResponse::Ok().json(token))
 }
+
+pub async fn logout() -> Result<HttpResponse, APIError> {
+    Ok(HttpResponse::NoContent().finish())
+}
+
+pub async fn refresh_token() -> Result<HttpResponse, APIError> {
+    Ok(HttpResponse::NoContent().finish())
+}
+
+pub async fn get_user() -> Result<HttpResponse, APIError> {
+    Ok(HttpResponse::NoContent().finish())
+}

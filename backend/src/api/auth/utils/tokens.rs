@@ -50,3 +50,7 @@ pub fn generate_access_token(user: &User) -> Result<String, APIError> {
     )
     .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))
 }
+
+pub fn generate_refresh_token(user: &User) -> Result<String, APIError> {
+    Ok("".to_string())
+}

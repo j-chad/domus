@@ -3,6 +3,7 @@ use crate::api::auth::model::{AuthResponse, LoginUser};
 use crate::api::auth::utils::tokens::generate_access_token;
 use crate::api::shared::errors::APIError;
 use crate::db::connection::{get_connection, DbPool};
+use crate::db::models::refresh_token::create_refresh_token;
 use crate::db::models::user::{create_user, find_user_by_email, NewUser};
 use actix_web::http::StatusCode;
 use actix_web::{error, web};
@@ -41,7 +42,7 @@ pub async fn login_user(
     let user = web::block(move || {
         // Obtaining a connection from the pool is also a potentially blocking operation.
         // So, it should be called within the `web::block` closure, as well.
-        let mut conn = get_connection(pool)?;
+        let mut conn = get_connection(&pool)?;
 
         find_user_by_email(&mut conn, &login.email)
             .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))
@@ -68,9 +69,19 @@ pub async fn login_user(
     let user = user?;
     let access_token = generate_access_token(&user)?;
 
+    let refresh_token = web::block(move || {
+        let mut conn = get_connection(&pool)?;
+        create_refresh_token(&mut conn, &user.id)
+            .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))
+    })
+    .await
+    .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))??
+    .id
+    .to_string();
+
     Ok(AuthResponse {
         access_token,
-        refresh_token: "".to_string(),
+        refresh_token,
     })
 }
 

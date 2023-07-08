@@ -8,8 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/db/models/refresh_token.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/api/auth/service.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/service.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/utils/tokens.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/utils/tokens.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/connection.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/models/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/models/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/models/user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/models/user.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/schema.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/schema.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +56,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;1-crud-methods-for-user-resource-1&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jchad/Code/domus/backend/src/api&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jchad/Code/domus/backend/src/db/models&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -61,7 +70,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.cargo.check&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/jchad/Code/domus/web/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -73,10 +82,10 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/db/models" />
       <recent name="$PROJECT_DIR$/backend/src/api" />
       <recent name="$PROJECT_DIR$/backend/src/api/openapi" />
       <recent name="$PROJECT_DIR$/.github/ISSUE_TEMPLATE" />
-      <recent name="$PROJECT_DIR$/backend/src/db/models" />
       <recent name="$PROJECT_DIR$/web/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -89,19 +98,19 @@
     <option name="runOnTheFly" value="true" />
     <option name="tool" value="Clippy" />
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
-      <deployment type="docker-compose.yml">
-        <settings />
-      </deployment>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Cargo.Backend">
     <configuration name="Backend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="envFilePath" value="" />
           <option name="sourceFilePath" value="backend/docker-compose.yml" />
         </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
       </deployment>
       <method v="2" />
     </configuration>
@@ -114,6 +123,13 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Cargo.Backend" />
+      <item itemvalue="Cargo.Backend Watch" />
+      <item itemvalue="Docker.backend: Compose Deployment" />
+      <item itemvalue="Docker.Backend: Compose Deployment" />
+      <item itemvalue="npm.Web (dev)" />
+    </list>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
@@ -151,6 +167,7 @@
       <workItem from="1685835280448" duration="416000" />
       <workItem from="1686128424192" duration="4503000" />
       <workItem from="1686425969131" duration="6601000" />
+      <workItem from="1686506111592" duration="2985000" />
     </task>
     <servers />
   </component>

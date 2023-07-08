@@ -19,7 +19,7 @@ pub fn establish_connection() -> DbPool {
 }
 
 pub fn get_connection(
-    pool: web::Data<DbPool>,
+    pool: &web::Data<DbPool>,
 ) -> Result<PooledConnection<ConnectionManager<PgConnection>>, APIError> {
     pool.get()
         .map_err(|_e| APIError::from_code(StatusCode::INTERNAL_SERVER_ERROR))
