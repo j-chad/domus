@@ -1,18 +1,20 @@
-use actix_web::middleware::Logger;
-use actix_web::{App, HttpServer};
-use dotenvy::dotenv;
-use env_logger::Env;
-use log::info;
+mod handlers;
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    dotenv().ok();
-    env_logger::init_from_env(Env::default().default_filter_or("info"));
+use axum::Router;
+use std::net::SocketAddr;
 
-    info!("Starting server at http://localhost:8080");
+#[tokio::main]
+async fn main() {
+    // initialize tracing
+    tracing_subscriber::fmt::init();
 
-    HttpServer::new(move || App::new().wrap(Logger::default()))
-        .bind(("127.0.0.1", 8080))?
-        .run()
+    let app = Router::new().nest("/v1", handlers::get_router());
+
+    // run our app with hyper
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    tracing::debug!("listening on {}", addr);
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
         .await
+        .unwrap();
 }

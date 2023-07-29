@@ -8,37 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src-old/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Backend.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Backend.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/api_docs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/api_docs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/api_docs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/api_docs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/controller.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/controller.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/model.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/service.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/service.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/utils/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/utils/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/utils/tokens.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/auth/utils/tokens.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/home/controller.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/home/controller.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/home/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/home/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/home/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/home/model.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/home/service.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/home/service.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/api_response.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/shared/api_response.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/errors.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/shared/errors.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/json_error_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/shared/json_error_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/shared/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/shared/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/user/controller.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/user/controller.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/user/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/user/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/user/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/user/model.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/api/user/service.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/api/user/service.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/db/connection.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/db/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/models/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/db/models/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/models/refresh_token.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/db/models/refresh_token.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/models/user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/db/models/user.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/schema.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/db/schema.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src-old/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/web/web.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +35,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2Q2JLdcOkYFz7KUj3ZiZ5fNikUv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -76,7 +53,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;refactor&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jchad/Code/domus/backend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jchad/Code/domus/backend/src&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -86,11 +63,11 @@
     &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
     &quot;org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/api/shared/APIResponse.rs&quot;: &quot;true&quot;,
     &quot;org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/main.rs&quot;: &quot;true&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jchad/Code/domus/web/node_modules/prettier&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.cargo.check&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/jchad/Code/domus/web/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -102,11 +79,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src" />
       <recent name="$PROJECT_DIR$/backend" />
       <recent name="$PROJECT_DIR$/backend/src/db/models" />
       <recent name="$PROJECT_DIR$/backend/src/api" />
       <recent name="$PROJECT_DIR$/backend/src/api/openapi" />
-      <recent name="$PROJECT_DIR$/.github/ISSUE_TEMPLATE" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/src/db" />
@@ -191,6 +168,12 @@
       <workItem from="1688854359884" duration="6481000" />
       <workItem from="1689138524690" duration="674000" />
       <workItem from="1689275937812" duration="330000" />
+      <workItem from="1690445666069" duration="2601000" />
+      <workItem from="1690486479787" duration="599000" />
+      <workItem from="1690670044697" duration="3084000" />
+      <workItem from="1691470290663" duration="152000" />
+      <workItem from="1691470449033" duration="19000" />
+      <workItem from="1691470473469" duration="539000" />
     </task>
     <servers />
   </component>
