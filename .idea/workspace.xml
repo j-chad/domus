@@ -8,8 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/api_docs.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/services/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Backend.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Backend.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/handlers/auth.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/handlers/auth.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/handlers/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/handlers/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/auth.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/auth.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,37 +53,37 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "refactor",
-    "last_opened_file_path": "/home/jchad/Code/domus/backend/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/api/shared/APIResponse.rs": "true",
-    "org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/main.rs": "true",
-    "prettierjs.PrettierConfiguration.Package": "/home/jchad/Code/domus/web/node_modules/prettier",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "language.rust.rustfmt",
-    "ts.external.directory.path": "/home/jchad/Code/domus/web/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactor&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jchad/Code/domus/backend/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/api/shared/APIResponse.rs&quot;: &quot;true&quot;,
+    &quot;org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/main.rs&quot;: &quot;true&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jchad/Code/domus/web/node_modules/prettier&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.rustfmt&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/jchad/Code/domus/web/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/src" />
@@ -94,6 +103,23 @@
     <option name="tool" value="Clippy" />
   </component>
   <component name="RunManager" selected="Cargo.Backend">
+    <configuration name="add" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="add tower_http" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/backend" />
+      <option name="emulateTerminal" value="false" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <envs />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Backend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -121,10 +147,16 @@
     <list>
       <item itemvalue="Cargo.Backend" />
       <item itemvalue="Cargo.Backend Watch" />
+      <item itemvalue="Cargo.add" />
       <item itemvalue="Docker.backend: Compose Deployment" />
       <item itemvalue="Docker.Backend: Compose Deployment" />
       <item itemvalue="npm.Web (dev)" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Cargo.add" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
@@ -172,7 +204,9 @@
       <workItem from="1690670044697" duration="3084000" />
       <workItem from="1691470290663" duration="152000" />
       <workItem from="1691470449033" duration="19000" />
-      <workItem from="1691470473469" duration="1804000" />
+      <workItem from="1691470473469" duration="3018000" />
+      <workItem from="1691796897836" duration="9881000" />
+      <workItem from="1691818631267" duration="3815000" />
     </task>
     <servers />
   </component>
