@@ -1,8 +1,10 @@
 mod api_docs;
+mod error;
 mod handlers;
 mod models;
 mod services;
 
+use axum::http::StatusCode;
 use axum::Router;
 use std::net::SocketAddr;
 use tower_http::trace::{DefaultOnRequest, DefaultOnResponse, TraceLayer};
@@ -30,6 +32,7 @@ async fn main() {
                 .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
         )
         .nest("/v1", handlers::get_router())
+        .fallback(fallback)
         .layer(
             TraceLayer::new_for_http() // .make_span_with(DefaultMakeSpan::new().include_headers(true))
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
@@ -43,4 +46,8 @@ async fn main() {
         .serve(app.into_make_service())
         .await
         .unwrap();
+}
+
+async fn fallback() -> StatusCode {
+    StatusCode::FORBIDDEN
 }
