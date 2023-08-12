@@ -5,6 +5,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use tracing::info;
 
 pub fn get_router() -> Router {
     Router::new()
@@ -30,8 +31,8 @@ pub fn get_router() -> Router {
         (status = 409, description = "Conflict. User already exists."),
     )
 )]
-async fn register(Json(_payload): Json<RegisterNewUserRequest>) -> StatusCode {
-    // info!("Registering new user", payload);
+async fn register(Json(payload): Json<RegisterNewUserRequest>) -> StatusCode {
+    info!(email = payload.email, "registering new user");
     StatusCode::CREATED
 }
 
