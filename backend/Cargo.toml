@@ -9,7 +9,7 @@ repository = "https://github.com/j-chad/domus"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = { version = "0.6.19" }
+axum = "0.6.19"
 hyper = { version = "0.14.27", features = ["full"] }
 tokio = { version = "1.29.1", features = ["full"] }
 tower = "0.4.13"
@@ -21,3 +21,8 @@ utoipa = { version = "3", features = ["axum_extras", "uuid", "chrono"] }
 utoipa-swagger-ui = { version = "3", features = ["axum"] }
 validator = { version = "0.16.1", features = ["derive"] }
 tower-http = { version = "0.4.3", features = ["trace"] }
+diesel = "2.1.0"
+diesel-async = { version = "0.3.1", features = ["postgres", "deadpool"] }
+deadpool = "0.9.5"
+dotenvy = { version = "0.15" }
+

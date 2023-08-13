@@ -1,4 +1,5 @@
 mod api_docs;
+mod database;
 mod error;
 mod handlers;
 mod models;
@@ -6,7 +7,10 @@ mod services;
 
 use axum::http::StatusCode;
 use axum::Router;
+use diesel_async::pooled_connection::AsyncDieselConnectionManager;
+use diesel_async::AsyncPgConnection;
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tower_http::trace::{DefaultOnRequest, DefaultOnResponse, TraceLayer};
 use tower_http::LatencyUnit;
 use tracing::Level;
@@ -14,6 +18,19 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
+
+#[derive(Clone)]
+struct AppState {
+    pub database_pool: database::ConnectionPool,
+}
+
+impl AppState {
+    fn new() -> Self {
+        let database_pool = database::get_connection_pool();
+
+        Self { database_pool }
+    }
+}
 
 #[tokio::main]
 async fn main() {
@@ -27,6 +44,7 @@ async fn main() {
         .init();
 
     let app = Router::new()
+        .with_state(Arc::new(AppState::new()))
         .merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
@@ -49,5 +67,5 @@ async fn main() {
 }
 
 async fn fallback() -> StatusCode {
-    StatusCode::FORBIDDEN
+    StatusCode::UNAUTHORIZED
 }
