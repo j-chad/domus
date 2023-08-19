@@ -1,6 +1,7 @@
 use crate::AppState;
 use axum::Router;
 
+pub mod api_docs;
 pub mod auth;
 
 pub fn get_router() -> Router<AppState> {

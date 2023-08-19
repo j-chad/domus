@@ -1,7 +1,7 @@
 use utoipa::OpenApi;
 
-use crate::api::auth::controllers as auth_routes;
-use crate::api::auth::models as auth_models;
+use super::auth::controllers as auth_routes;
+use super::auth::models as auth_models;
 
 #[derive(OpenApi)]
 #[openapi(

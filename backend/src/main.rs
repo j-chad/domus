@@ -1,10 +1,10 @@
 mod api;
-mod api_docs;
-mod database;
 mod db;
 mod error;
 mod services;
 
+use crate::db::database;
+use api::api_docs;
 use axum::http::StatusCode;
 use axum::Router;
 use std::net::SocketAddr;
