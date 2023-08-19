@@ -3,7 +3,6 @@ mod api_docs;
 mod database;
 mod db;
 mod error;
-mod models;
 mod services;
 
 use axum::http::StatusCode;
@@ -62,7 +61,8 @@ async fn main() {
 
     // run our app with hyper
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    tracing::debug!("listening on {}", addr);
+    tracing::info!("listening on http://{}", addr);
+    tracing::debug!("docs at http://{}/swagger-ui", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await

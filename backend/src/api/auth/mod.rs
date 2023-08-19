@@ -4,7 +4,7 @@ use axum::Router;
 use controllers::{get_user, login, logout, refresh_token, register};
 
 pub mod controllers;
-mod models;
+pub mod models;
 
 pub fn get_router() -> Router<AppState> {
     Router::new()

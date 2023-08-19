@@ -1,6 +1,4 @@
 use crate::db::models::{NewUser, User};
-use crate::db::schema::users;
-use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use utoipa::ToSchema;

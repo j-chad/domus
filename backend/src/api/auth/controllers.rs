@@ -3,7 +3,6 @@ use crate::db::models::{NewUser, User};
 use crate::db::schema::users;
 use axum::extract::State;
 use axum::{http::StatusCode, response::IntoResponse, Json};
-use std::sync::Arc;
 
 use crate::AppState;
 use diesel::SelectableHelper;
