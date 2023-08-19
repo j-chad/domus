@@ -129,6 +129,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "base62"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f879ef8fc74665ed7f0e6127cb106315888fc2744f68e14b74f83edbb2a08992"
+
+[[package]]
 name = "base64"
 version = "0.21.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -348,6 +354,7 @@ name = "domus"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "base62",
  "chrono",
  "deadpool",
  "diesel",

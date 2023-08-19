@@ -1,4 +1,5 @@
 use crate::db::models::{NewUser, User};
+use crate::utils::friendly_id::{ItemIdType, ToFriendlyId};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 use utoipa::ToSchema;
@@ -90,7 +91,7 @@ pub struct UserResponse {
 impl From<User> for UserResponse {
     fn from(user: User) -> Self {
         Self {
-            id: user.id,
+            id: user.id.to_friendly_id(ItemIdType::User),
             email: user.email,
             first_name: user.first_name,
             last_name: user.last_name,

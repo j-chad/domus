@@ -1,1 +1,1 @@
-mod friendly_id;
+pub mod friendly_id;

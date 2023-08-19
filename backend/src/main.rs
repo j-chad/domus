@@ -4,10 +4,10 @@ mod error;
 mod services;
 mod utils;
 
-use crate::db::database;
 use api::api_docs;
 use axum::http::StatusCode;
 use axum::Router;
+use db::database;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tower_http::trace::{DefaultOnRequest, DefaultOnResponse, TraceLayer};
