@@ -19,17 +19,19 @@ use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(Clone)]
-pub struct AppState {
+pub struct AppStateInternal {
     pub database_pool: database::ConnectionPool,
 }
 
-impl AppState {
+impl AppStateInternal {
     fn new() -> Self {
         let database_pool = database::get_connection_pool();
 
         Self { database_pool }
     }
 }
+
+pub type AppState = Arc<AppStateInternal>;
 
 #[tokio::main]
 async fn main() {
@@ -56,7 +58,7 @@ async fn main() {
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(DefaultOnResponse::new().latency_unit(LatencyUnit::Millis)),
         )
-        .with_state(Arc::new(AppState::new()));
+        .with_state(Arc::new(AppStateInternal::new()));
 
     // run our app with hyper
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));

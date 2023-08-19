@@ -26,7 +26,7 @@ use tracing::info;
     )
 )]
 pub async fn register(
-    State(pool): State<Arc<AppState>>,
+    State(pool): State<AppState>,
     Json(payload): Json<RegisterNewUserRequest>,
 ) -> Result<(StatusCode, Json<UserResponse>), StatusCode> {
     info!(email = payload.email, "registering new user");

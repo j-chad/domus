@@ -2,12 +2,11 @@ use crate::AppState;
 use axum::routing::{get, post};
 use axum::Router;
 use controllers::{get_user, login, logout, refresh_token, register};
-use std::sync::Arc;
 
 pub mod controllers;
 mod models;
 
-pub fn get_router() -> Router<Arc<AppState>> {
+pub fn get_router() -> Router<AppState> {
     Router::new()
         .route("/register", post(register))
         .route("/login", post(login))
