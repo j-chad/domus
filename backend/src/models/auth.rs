@@ -1,9 +1,13 @@
-use serde::Deserialize;
+use crate::db::models::User;
+use crate::db::schema::users;
+use diesel::prelude::*;
+use serde::{Deserialize, Serialize};
 use std::fmt;
 use utoipa::ToSchema;
 use validator::Validate;
 
-#[derive(Deserialize, Validate, ToSchema)]
+#[derive(Deserialize, Validate, ToSchema, Insertable)]
+#[diesel(table_name = users)]
 pub struct RegisterNewUserRequest {
     #[validate(email)]
     #[schema(example = "john.smith@example.com", format = "email")]
@@ -64,5 +68,24 @@ impl fmt::Debug for RefreshTokenRequest {
         f.debug_struct("RefreshTokenRequest")
             .field("refresh_token", &"********")
             .finish()
+    }
+}
+
+#[derive(Serialize, ToSchema)]
+pub struct UserResponse {
+    pub id: String,
+    pub email: String,
+    pub first_name: String,
+    pub last_name: String,
+}
+
+impl From<User> for UserResponse {
+    fn from(user: User) -> Self {
+        Self {
+            id: user.id,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+        }
     }
 }

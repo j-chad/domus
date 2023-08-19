@@ -1,5 +1,6 @@
 mod api_docs;
 mod database;
+mod db;
 mod error;
 mod handlers;
 mod models;
@@ -7,8 +8,6 @@ mod services;
 
 use axum::http::StatusCode;
 use axum::Router;
-use diesel_async::pooled_connection::AsyncDieselConnectionManager;
-use diesel_async::AsyncPgConnection;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tower_http::trace::{DefaultOnRequest, DefaultOnResponse, TraceLayer};
@@ -20,7 +19,7 @@ use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(Clone)]
-struct AppState {
+pub struct AppState {
     pub database_pool: database::ConnectionPool,
 }
 
@@ -34,6 +33,8 @@ impl AppState {
 
 #[tokio::main]
 async fn main() {
+    dotenvy::dotenv().unwrap();
+
     // initialize tracing
     tracing_subscriber::registry()
         .with(
@@ -44,7 +45,6 @@ async fn main() {
         .init();
 
     let app = Router::new()
-        .with_state(Arc::new(AppState::new()))
         .merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
@@ -55,7 +55,8 @@ async fn main() {
             TraceLayer::new_for_http() // .make_span_with(DefaultMakeSpan::new().include_headers(true))
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(DefaultOnResponse::new().latency_unit(LatencyUnit::Millis)),
-        );
+        )
+        .with_state(Arc::new(AppState::new()));
 
     // run our app with hyper
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));

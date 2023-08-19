@@ -1,13 +1,21 @@
-use crate::models::auth::RegisterNewUserRequest;
+use crate::db::models::User;
+use crate::db::schema::users;
+use crate::models::auth::{RegisterNewUserRequest, UserResponse};
+use axum::extract::State;
 use axum::{
     http::StatusCode,
     response::IntoResponse,
     routing::{get, post},
     Json, Router,
 };
+use std::sync::Arc;
+
+use crate::AppState;
+use diesel::SelectableHelper;
+use diesel_async::RunQueryDsl;
 use tracing::info;
 
-pub fn get_router() -> Router {
+pub fn get_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/register", post(register))
         .route("/login", post(login))
@@ -31,9 +39,30 @@ pub fn get_router() -> Router {
         (status = 409, description = "Conflict. User already exists."),
     )
 )]
-async fn register(Json(payload): Json<RegisterNewUserRequest>) -> StatusCode {
+async fn register(
+    State(pool): State<Arc<AppState>>,
+    Json(payload): Json<RegisterNewUserRequest>,
+) -> Result<(StatusCode, Json<UserResponse>), StatusCode> {
     info!(email = payload.email, "registering new user");
-    StatusCode::CREATED
+
+    let mut conn = pool
+        .database_pool
+        .get()
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    let new_user: UserResponse = diesel::insert_into(users::table)
+        .values(&payload)
+        .returning(User::as_returning())
+        .get_result(&mut conn)
+        .await
+        .map_err(|e| {
+            info!(email = payload.email, "failed to register new user: {}", e);
+            StatusCode::CONFLICT
+        })?
+        .into();
+
+    Ok((StatusCode::CREATED, Json(new_user)))
 }
 
 /// Login with an existing users credentials
