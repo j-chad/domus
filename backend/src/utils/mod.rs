@@ -1,0 +1,1 @@
+mod friendly_id;

@@ -1,10 +1,12 @@
+use diesel::prelude::*;
+use diesel::sql_types::Uuid;
 use diesel::{Insertable, Queryable, Selectable};
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::db::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
-    pub id: String,
+    pub id: Uuid,
     pub email: String,
     pub password: String,
     pub first_name: String,

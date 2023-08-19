@@ -2,8 +2,8 @@
 
 diesel::table! {
     refresh_tokens (id) {
-        id -> Text,
-        user_id -> Text,
+        id -> Uuid,
+        user_id -> Uuid,
         expires_at -> Timestamp,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
@@ -12,7 +12,7 @@ diesel::table! {
 
 diesel::table! {
     users (id) {
-        id -> Text,
+        id -> Uuid,
         email -> Text,
         first_name -> Text,
         last_name -> Text,

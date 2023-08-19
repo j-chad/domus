@@ -2,6 +2,7 @@ mod api;
 mod db;
 mod error;
 mod services;
+mod utils;
 
 use crate::db::database;
 use api::api_docs;
