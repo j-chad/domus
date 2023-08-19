@@ -1,4 +1,4 @@
-use diesel::{Queryable, Selectable};
+use diesel::{Insertable, Queryable, Selectable};
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::db::schema::users)]
@@ -11,4 +11,13 @@ pub struct User {
     pub last_name: String,
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = crate::db::schema::users)]
+pub struct NewUser {
+    pub email: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub password: String,
 }

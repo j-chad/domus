@@ -1,28 +1,14 @@
-use crate::db::models::User;
+use super::models::{RegisterNewUserRequest, UserResponse};
+use crate::db::models::{NewUser, User};
 use crate::db::schema::users;
-use crate::models::auth::{RegisterNewUserRequest, UserResponse};
 use axum::extract::State;
-use axum::{
-    http::StatusCode,
-    response::IntoResponse,
-    routing::{get, post},
-    Json, Router,
-};
+use axum::{http::StatusCode, response::IntoResponse, Json};
 use std::sync::Arc;
 
 use crate::AppState;
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
 use tracing::info;
-
-pub fn get_router() -> Router<Arc<AppState>> {
-    Router::new()
-        .route("/register", post(register))
-        .route("/login", post(login))
-        .route("/logout", post(logout))
-        .route("/refresh_token", post(refresh_token))
-        .route("/user", get(get_user))
-}
 
 /// Register a new user
 #[utoipa::path(
@@ -39,7 +25,7 @@ pub fn get_router() -> Router<Arc<AppState>> {
         (status = 409, description = "Conflict. User already exists."),
     )
 )]
-async fn register(
+pub async fn register(
     State(pool): State<Arc<AppState>>,
     Json(payload): Json<RegisterNewUserRequest>,
 ) -> Result<(StatusCode, Json<UserResponse>), StatusCode> {
@@ -51,18 +37,20 @@ async fn register(
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    let new_user: UserResponse = diesel::insert_into(users::table)
-        .values(&payload)
+    let new_user = NewUser::from(payload);
+
+    let new_user_response: UserResponse = diesel::insert_into(users::table)
+        .values(&new_user)
         .returning(User::as_returning())
         .get_result(&mut conn)
         .await
         .map_err(|e| {
-            info!(email = payload.email, "failed to register new user: {}", e);
+            info!(email = new_user.email, "failed to register new user: {}", e);
             StatusCode::CONFLICT
         })?
         .into();
 
-    Ok((StatusCode::CREATED, Json(new_user)))
+    Ok((StatusCode::CREATED, Json(new_user_response)))
 }
 
 /// Login with an existing users credentials
@@ -78,7 +66,7 @@ async fn register(
         (status = 501, description = "Not Implemented")
     )
 )]
-async fn login() -> impl IntoResponse {
+pub async fn login() -> impl IntoResponse {
     StatusCode::NOT_IMPLEMENTED
 }
 
@@ -91,7 +79,7 @@ async fn login() -> impl IntoResponse {
         (status = 501, description = "Not Implemented")
     )
 )]
-async fn logout() -> impl IntoResponse {
+pub async fn logout() -> impl IntoResponse {
     StatusCode::NOT_IMPLEMENTED
 }
 
@@ -110,7 +98,7 @@ async fn logout() -> impl IntoResponse {
         (status = 501, description = "Not Implemented")
     )
 )]
-async fn refresh_token() -> impl IntoResponse {
+pub async fn refresh_token() -> impl IntoResponse {
     StatusCode::NOT_IMPLEMENTED
 }
 
@@ -123,6 +111,6 @@ async fn refresh_token() -> impl IntoResponse {
         (status = 501, description = "Not Implemented")
     )
 )]
-async fn get_user() -> impl IntoResponse {
+pub async fn get_user() -> impl IntoResponse {
     StatusCode::NOT_IMPLEMENTED
 }

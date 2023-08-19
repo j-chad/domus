@@ -1,4 +1,4 @@
-use crate::db::models::User;
+use crate::db::models::{NewUser, User};
 use crate::db::schema::users;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -6,8 +6,7 @@ use std::fmt;
 use utoipa::ToSchema;
 use validator::Validate;
 
-#[derive(Deserialize, Validate, ToSchema, Insertable)]
-#[diesel(table_name = users)]
+#[derive(Deserialize, Validate, ToSchema)]
 pub struct RegisterNewUserRequest {
     #[validate(email)]
     #[schema(example = "john.smith@example.com", format = "email")]
@@ -34,6 +33,17 @@ impl fmt::Debug for RegisterNewUserRequest {
             .field("last_name", &self.last_name)
             .field("password", &"********")
             .finish()
+    }
+}
+
+impl From<RegisterNewUserRequest> for NewUser {
+    fn from(request: RegisterNewUserRequest) -> Self {
+        Self {
+            email: request.email,
+            first_name: request.first_name,
+            last_name: request.last_name,
+            password: request.password,
+        }
     }
 }
 

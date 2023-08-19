@@ -1,8 +1,8 @@
+mod api;
 mod api_docs;
 mod database;
 mod db;
 mod error;
-mod handlers;
 mod models;
 mod services;
 
