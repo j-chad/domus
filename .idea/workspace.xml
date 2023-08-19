@@ -8,13 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6f9cfb8-b76e-4878-ad10-f8da7a04fad4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/models.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/models.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/handlers/auth.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/controllers.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/handlers/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/controllers.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/controllers.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/models/auth.rs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api/auth/models.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,37 +48,37 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "refactor",
-    "last_opened_file_path": "/home/jchad/Code/domus/backend/src/api/auth",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/api/shared/APIResponse.rs": "true",
-    "org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/main.rs": "true",
-    "prettierjs.PrettierConfiguration.Package": "/home/jchad/Code/domus/web/node_modules/prettier",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.import",
-    "ts.external.directory.path": "/home/jchad/Code/domus/web/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactor&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jchad/Code/domus/backend/src/api/auth&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/api/shared/APIResponse.rs&quot;: &quot;true&quot;,
+    &quot;org.rust.disableDetachedFileInspection/home/jchad/Code/domus/backend/src/main.rs&quot;: &quot;true&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jchad/Code/domus/web/node_modules/prettier&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.import&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/jchad/Code/domus/web/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/src/api/auth" />
@@ -166,6 +165,7 @@
       <workItem from="1691856748599" duration="3696000" />
       <workItem from="1691875619402" duration="12805000" />
       <workItem from="1692425614013" duration="5547000" />
+      <workItem from="1692467575338" duration="633000" />
     </task>
     <servers />
   </component>
