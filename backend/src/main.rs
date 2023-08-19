@@ -51,7 +51,7 @@ async fn main() {
             SwaggerUi::new("/swagger-ui")
                 .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
         )
-        .nest("/v1", handlers::get_router())
+        .nest("/v1", api::get_router())
         .fallback(fallback)
         .layer(
             TraceLayer::new_for_http() // .make_span_with(DefaultMakeSpan::new().include_headers(true))
