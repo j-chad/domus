@@ -4,10 +4,12 @@ use crate::db::schema::users;
 use axum::extract::State;
 use axum::{http::StatusCode, response::IntoResponse, Json};
 
+use crate::api::error::ErrorType::{Unknown, UserAlreadyExists};
+use crate::api::error::{APIError, APIErrorBuilder};
 use crate::AppState;
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
-use tracing::info;
+use tracing::{error, info, warn};
 
 /// Register a new user
 #[utoipa::path(
@@ -19,22 +21,21 @@ use tracing::info;
         content = RegisterNewUserRequest
     ),
     responses(
-        (status = 201, description = "Created new user successfully"),
-        (status = 400, description = "Bad Request"),
-        (status = 409, description = "Conflict. User already exists."),
+        (status = 201, description = "Created new user successfully", body = UserResponse),
+        (status = 400, description = "Bad Request", body = APIError),
+        (status = 409, description = "Conflict. User already exists.", body = APIError),
     )
 )]
 pub async fn register(
     State(pool): State<AppState>,
     Json(payload): Json<RegisterNewUserRequest>,
-) -> Result<(StatusCode, Json<UserResponse>), StatusCode> {
+) -> Result<(StatusCode, Json<UserResponse>), APIError> {
     info!(email = payload.email, "registering new user");
 
-    let mut conn = pool
-        .database_pool
-        .get()
-        .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let mut conn = pool.database_pool.get().await.map_err(|err| {
+        error!(error = %err, "failed to get database connection");
+        APIErrorBuilder::error(Unknown).build()
+    })?;
 
     let new_user = NewUser::from(payload);
 
@@ -44,8 +45,11 @@ pub async fn register(
         .get_result(&mut conn)
         .await
         .map_err(|e| {
-            info!(email = new_user.email, "failed to register new user: {}", e);
-            StatusCode::CONFLICT
+            warn!(email = new_user.email, "failed to register new user: {}", e);
+            APIErrorBuilder::error(UserAlreadyExists)
+                .detail("If you already have an account, try logging in.")
+                .with_field("email", new_user.email.into())
+                .build()
         })?
         .into();
 

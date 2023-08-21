@@ -1,4 +1,3 @@
-use diesel::prelude::*;
 use diesel::{Insertable, Queryable, Selectable};
 use uuid::Uuid;
 

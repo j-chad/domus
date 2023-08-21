@@ -1,6 +1,5 @@
 mod api;
 mod db;
-mod error;
 mod services;
 mod utils;
 

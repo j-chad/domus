@@ -28,4 +28,5 @@ deadpool = "0.9.5"
 dotenvy = { version = "0.15" }
 chrono = "0.4.26"
 base62 = "2.0.2"
+const_format = "0.2.31"
 

@@ -1,7 +1,7 @@
-use utoipa::OpenApi;
-
 use super::auth::controllers as auth_routes;
 use super::auth::models as auth_models;
+use super::error;
+use utoipa::OpenApi;
 
 #[derive(OpenApi)]
 #[openapi(
@@ -16,7 +16,9 @@ use super::auth::models as auth_models;
 	),
 	components(
 		schemas(
+			error::APIError,
 			auth_models::RegisterNewUserRequest,
+			auth_models::UserResponse,
 			auth_models::LoginUserRequest,
 			auth_models::RefreshTokenRequest,
 		)
