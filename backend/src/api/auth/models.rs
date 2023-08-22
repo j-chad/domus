@@ -1,7 +1,9 @@
+use crate::api::auth::utils::hash_password;
 use crate::db::models::{NewUser, User};
 use crate::utils::friendly_id::{ItemIdType, ToFriendlyId};
 use serde::{Deserialize, Serialize};
 use std::fmt;
+use tracing::error;
 use utoipa::ToSchema;
 use validator::Validate;
 
@@ -32,17 +34,6 @@ impl fmt::Debug for RegisterNewUserRequest {
             .field("last_name", &self.last_name)
             .field("password", &"********")
             .finish()
-    }
-}
-
-impl From<RegisterNewUserRequest> for NewUser {
-    fn from(request: RegisterNewUserRequest) -> Self {
-        Self {
-            email: request.email,
-            first_name: request.first_name,
-            last_name: request.last_name,
-            password: request.password,
-        }
     }
 }
 

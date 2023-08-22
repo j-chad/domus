@@ -1,12 +1,12 @@
 use super::models::{RegisterNewUserRequest, UserResponse};
-use crate::db::models::{NewUser, User};
-use crate::db::schema::users;
-use axum::extract::State;
-use axum::{http::StatusCode, response::IntoResponse, Json};
-
+use crate::api::auth::utils::hash_password;
 use crate::api::error::ErrorType::{Unknown, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
+use crate::db::models::{NewUser, User};
+use crate::db::schema::users;
 use crate::AppState;
+use axum::extract::State;
+use axum::{http::StatusCode, response::IntoResponse, Json};
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
 use tracing::{error, info, warn};
@@ -37,7 +37,17 @@ pub async fn register(
         APIErrorBuilder::error(Unknown).build()
     })?;
 
-    let new_user = NewUser::from(payload);
+    let hashed_password = hash_password(&payload.password).map_err(|err| {
+        error!(error = %err, "failed to hash password");
+        APIErrorBuilder::error(Unknown).build()
+    })?;
+
+    let new_user = NewUser {
+        email: payload.email,
+        first_name: payload.first_name,
+        last_name: payload.last_name,
+        password: hashed_password,
+    };
 
     let new_user_response: UserResponse = diesel::insert_into(users::table)
         .values(&new_user)

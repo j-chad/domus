@@ -5,6 +5,7 @@ use controllers::{get_user, login, logout, refresh_token, register};
 
 pub mod controllers;
 pub mod models;
+mod utils;
 
 pub fn get_router() -> Router<AppState> {
     Router::new()
