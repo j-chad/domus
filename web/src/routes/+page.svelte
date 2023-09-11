@@ -8,3 +8,5 @@
 	<a href="/blog">Blog</a>
 	<a href="/about">About</a>
 </div>
+
+<button class="btn">Hello daisyUI</button>
