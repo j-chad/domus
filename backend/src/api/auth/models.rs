@@ -1,9 +1,7 @@
-use crate::api::auth::utils::hash_password;
-use crate::db::models::{NewUser, User};
-use crate::utils::friendly_id::{ItemIdType, ToFriendlyId};
+use super::super::utils::friendly_id::{ItemIdType, ToFriendlyId};
+use crate::db::user::User;
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use tracing::error;
 use utoipa::ToSchema;
 use validator::Validate;
 
@@ -88,4 +86,10 @@ impl From<User> for UserResponse {
             last_name: user.last_name,
         }
     }
+}
+
+#[derive(Serialize, ToSchema)]
+pub struct AuthResponse {
+    pub access_token: String,
+    pub refresh_token: String,
 }

@@ -1,12 +1,15 @@
 use super::models::{RegisterNewUserRequest, UserResponse};
+use crate::api::auth::models::{AuthResponse, LoginUserRequest};
 use crate::api::auth::utils::hash_password;
 use crate::api::error::ErrorType::{Unknown, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
-use crate::db::models::{NewUser, User};
+use crate::api::utils::db::get_db_connection;
 use crate::db::schema::users;
+use crate::db::user::{NewUser, User};
 use crate::AppState;
 use axum::extract::State;
 use axum::{http::StatusCode, response::IntoResponse, Json};
+use diesel::prelude::*;
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
 use tracing::{error, info, warn};
@@ -27,15 +30,12 @@ use tracing::{error, info, warn};
     )
 )]
 pub async fn register(
-    State(pool): State<AppState>,
+    State(state): State<AppState>,
     Json(payload): Json<RegisterNewUserRequest>,
 ) -> Result<(StatusCode, Json<UserResponse>), APIError> {
     info!(email = payload.email, "registering new user");
 
-    let mut conn = pool.database_pool.get().await.map_err(|err| {
-        error!(error = %err, "failed to get database connection");
-        APIErrorBuilder::error(Unknown).build()
-    })?;
+    let mut conn = get_db_connection(&state.database_pool).await?;
 
     let hashed_password = hash_password(&payload.password).map_err(|err| {
         error!(error = %err, "failed to hash password");
@@ -76,11 +76,33 @@ pub async fn register(
         content = LoginUserRequest
     ),
     responses(
-        (status = 501, description = "Not Implemented")
+        (status = 200, description = "Login successful", body = AuthResponse),
     )
 )]
-pub async fn login() -> impl IntoResponse {
-    StatusCode::NOT_IMPLEMENTED
+pub async fn login(
+    State(state): State<AppState>,
+    Json(payload): Json<LoginUserRequest>,
+) -> Result<(StatusCode, Json<AuthResponse>), APIError> {
+    info!(email = payload.email, "logging in");
+
+    let mut conn = get_db_connection(&state.database_pool).await?;
+
+    let _user: User = User::all()
+        .filter(User::by_email(&payload.email))
+        .first(&mut conn)
+        .await
+        .map_err(|e| {
+            warn!(email = payload.email, "failed to login: {}", e);
+            APIErrorBuilder::error(Unknown).build()
+        })?;
+
+    Ok((
+        StatusCode::OK,
+        Json(AuthResponse {
+            access_token: "test".to_string(),
+            refresh_token: "test".to_string(),
+        }),
+    ))
 }
 
 /// Logout the current user

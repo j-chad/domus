@@ -1,7 +1,5 @@
 mod api;
 mod db;
-mod services;
-mod utils;
 
 use api::api_docs;
 use axum::http::StatusCode;
