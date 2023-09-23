@@ -1,7 +1,7 @@
 use super::models::{RegisterNewUserRequest, UserResponse};
 use crate::api::auth::models::{AuthResponse, LoginUserRequest};
-use crate::api::auth::utils::{generate_auth_token, hash_password};
-use crate::api::error::ErrorType::{Unknown, UserAlreadyExists};
+use crate::api::auth::utils::{generate_auth_token, hash_password, verify_password};
+use crate::api::error::ErrorType::{LoginIncorrect, Unknown, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::api::utils::db::get_db_connection;
 use crate::db::schema::users;
@@ -88,19 +88,36 @@ pub async fn login(
 
     let mut conn = get_db_connection(&state.database_pool).await?;
 
-    let _user: User = User::all()
+    let user: Result<User, diesel::result::Error> = User::all()
         .filter(User::by_email(&payload.email))
         .first(&mut conn)
-        .await
-        .map_err(|e| {
-            warn!(email = payload.email, "failed to login: {}", e);
-            APIErrorBuilder::error(Unknown).build()
-        })?;
+        .await;
+
+    let password_matches: bool = match user {
+        Ok(ref user) => verify_password(&payload.password, &user.password).is_ok(),
+        _ => {
+            // Prevent timing side channel attacks by always taking the same amount of time to verify a password.
+            let _ = verify_password("", "").is_ok();
+            false
+        }
+    };
+
+    if !password_matches {
+        info!(email = payload.email, "failed to login");
+        return Err(APIErrorBuilder::error(LoginIncorrect)
+            .with_field("email", payload.email.into())
+            .build());
+    }
+
+    let unwrapped_user = user.map_err(|e| {
+        warn!(error = %e, "database error when logging in. This should never happen.");
+        APIErrorBuilder::error(Unknown).build()
+    })?;
 
     Ok((
         StatusCode::OK,
         Json(AuthResponse {
-            access_token: generate_auth_token(&_user).map_err(|e| {
+            access_token: generate_auth_token(&unwrapped_user).map_err(|e| {
                 error!(error = %e, "failed to generate auth token");
                 APIErrorBuilder::error(Unknown).build()
             })?,

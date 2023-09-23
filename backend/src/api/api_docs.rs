@@ -21,6 +21,7 @@ use utoipa::OpenApi;
 			auth_models::UserResponse,
 			auth_models::LoginUserRequest,
 			auth_models::RefreshTokenRequest,
+			auth_models::AuthResponse,
 		)
 	)
 )]

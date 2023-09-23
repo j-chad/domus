@@ -90,6 +90,7 @@ impl From<User> for UserResponse {
 
 #[derive(Serialize, ToSchema)]
 pub struct AuthResponse {
+    #[schema(format = "paseto")]
     pub access_token: String,
     pub refresh_token: String,
 }

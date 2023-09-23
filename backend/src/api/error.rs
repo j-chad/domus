@@ -15,6 +15,7 @@ pub enum ErrorType {
     Unknown,
     ValidationError,
     UserAlreadyExists,
+    LoginIncorrect,
 }
 
 impl ErrorType {
@@ -23,6 +24,7 @@ impl ErrorType {
             ErrorType::Unknown => "about:blank",
             ErrorType::ValidationError => concatcp!(ERROR_URI, "validation-error"),
             ErrorType::UserAlreadyExists => concatcp!(ERROR_URI, "user-already-exists"),
+            ErrorType::LoginIncorrect => concatcp!(ERROR_URI, "login-incorrect"),
         }
     }
 
@@ -31,6 +33,7 @@ impl ErrorType {
             ErrorType::Unknown => "An unknown error has occurred.",
             ErrorType::ValidationError => "Your request is not valid.",
             ErrorType::UserAlreadyExists => "A user with that email already exists.",
+            ErrorType::LoginIncorrect => "Login Incorrect.",
         }
     }
 
@@ -39,6 +42,14 @@ impl ErrorType {
             ErrorType::Unknown => StatusCode::INTERNAL_SERVER_ERROR,
             ErrorType::ValidationError => StatusCode::BAD_REQUEST,
             ErrorType::UserAlreadyExists => StatusCode::CONFLICT,
+            ErrorType::LoginIncorrect => StatusCode::UNAUTHORIZED,
+        }
+    }
+
+    pub fn get_detail(&self) -> Option<&'static str> {
+        match self {
+            ErrorType::LoginIncorrect => Some("The email or password you entered is incorrect. Please check your credentials and try again."),
+            _ => None,
         }
     }
 }
@@ -162,7 +173,9 @@ impl APIErrorBuilder {
         APIError {
             status: self.error_type.get_status(),
             title: self.error_type.get_title().to_string(),
-            detail: self.detail,
+            detail: self
+                .detail
+                .or(self.error_type.get_detail().map(|s| s.to_string())),
             instance: self.instance,
             extra: self.extra,
             error_type: self.error_type.get_type().to_string(),
