@@ -1,32 +1,72 @@
-use actix_web::middleware::Logger;
-use actix_web::{web, App, HttpServer};
-use domus_backend::{api, db};
-use dotenvy::dotenv;
-use env_logger::Env;
-use log::info;
+mod api;
+mod db;
+
+use api::api_docs;
+use axum::http::StatusCode;
+use axum::Router;
+use db::database;
+use std::net::SocketAddr;
+use std::sync::Arc;
+use tower_http::trace::{DefaultOnRequest, DefaultOnResponse, TraceLayer};
+use tower_http::LatencyUnit;
+use tracing::Level;
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    dotenv().ok();
-    env_logger::init_from_env(Env::default().default_filter_or("info"));
+#[derive(Clone)]
+pub struct AppStateInternal {
+    pub database_pool: database::ConnectionPool,
+}
 
-    let pool = db::connection::establish_connection();
+impl AppStateInternal {
+    fn new() -> Self {
+        let database_pool = database::get_connection_pool();
 
-    info!("Starting server at http://localhost:8080");
+        Self { database_pool }
+    }
+}
 
-    HttpServer::new(move || {
-        App::new()
-            .wrap(Logger::default())
-            .app_data(web::Data::new(pool.clone()))
-            .service(SwaggerUi::new("/swagger-ui/{_:.*}").url(
-                "/v1/api-docs/openapi.json",
-                api::api_docs::ApiDocs::openapi(),
-            ))
-            .service(web::scope("/v1").configure(api::configure))
-    })
-    .bind(("127.0.0.1", 8080))?
-    .run()
-    .await
+pub type AppState = Arc<AppStateInternal>;
+
+#[tokio::main]
+async fn main() {
+    dotenvy::dotenv().unwrap();
+
+    // initialize tracing
+    tracing_subscriber::registry()
+        .with(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "domus=debug,tower_http=debug,axum::rejection=trace".into()),
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
+
+    let app = Router::new()
+        .merge(
+            SwaggerUi::new("/swagger-ui")
+                .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
+        )
+        .nest("/v1", api::get_router())
+        .fallback(fallback)
+        .layer(
+            TraceLayer::new_for_http() // .make_span_with(DefaultMakeSpan::new().include_headers(true))
+                .on_request(DefaultOnRequest::new().level(Level::INFO))
+                .on_response(DefaultOnResponse::new().latency_unit(LatencyUnit::Millis)),
+        )
+        .with_state(Arc::new(AppStateInternal::new()));
+
+    // run our app with hyper
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    tracing::info!("listening on http://{}", addr);
+    tracing::debug!("docs at http://{}/swagger-ui", addr);
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+
+async fn fallback() -> StatusCode {
+    StatusCode::UNAUTHORIZED
 }

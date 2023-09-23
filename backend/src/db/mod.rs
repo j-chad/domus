@@ -1,3 +1,4 @@
-pub mod connection;
-pub mod models;
+pub mod database;
+pub mod refresh_token;
 pub mod schema;
+pub mod user;

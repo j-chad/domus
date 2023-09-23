@@ -1,20 +1,28 @@
-use utoipa::Modify;
-use utoipa::OpenApi as OpenApiTrait;
+use super::auth::controllers as auth_routes;
+use super::auth::models as auth_models;
+use super::error;
+use utoipa::OpenApi;
 
-use super::auth::api_docs::AuthApiDoc;
-
-struct ApiMerger;
-
-impl Modify for ApiMerger {
-    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
-        openapi.merge(AuthApiDoc::openapi());
-    }
-}
-
-#[derive(OpenApiTrait)]
+#[derive(OpenApi)]
 #[openapi(
-    info(title="Domus API"),
-    servers((url="/v1/")),
-    modifiers(&ApiMerger),
+	info(title="Domus API"),
+	servers((url="/v1/")),
+	paths(
+		auth_routes::register,
+		auth_routes::login,
+		auth_routes::logout,
+		auth_routes::refresh_token,
+		auth_routes::get_user,
+	),
+	components(
+		schemas(
+			error::APIError,
+			auth_models::RegisterNewUserRequest,
+			auth_models::UserResponse,
+			auth_models::LoginUserRequest,
+			auth_models::RefreshTokenRequest,
+			auth_models::AuthResponse,
+		)
+	)
 )]
 pub struct ApiDocs {}

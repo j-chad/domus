@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Backend" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="run --package domus-backend --bin domus-backend" />
+    <option name="command" value="run --package domus --bin domus" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$/backend" />
     <option name="emulateTerminal" value="true" />
     <option name="channel" value="DEFAULT" />
@@ -9,13 +9,12 @@
     <option name="withSudo" value="false" />
     <option name="buildTarget" value="REMOTE" />
     <option name="backtrace" value="SHORT" />
-    <envs>
-      <env name="RUST_LOG" value="info" />
-    </envs>
+    <envs />
     <option name="isRedirectInput" value="false" />
     <option name="redirectInputPath" value="" />
     <method v="2">
       <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Backend: Compose Deployment" run_configuration_type="docker-deploy" />
     </method>
   </configuration>
 </component>

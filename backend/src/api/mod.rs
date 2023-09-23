@@ -1,19 +1,11 @@
-use actix_web::web;
-use utoipa::openapi::{Info, OpenApi, OpenApiBuilder, Server};
+use crate::AppState;
+use axum::Router;
 
 pub mod api_docs;
 pub mod auth;
-pub mod shared;
+mod error;
+mod utils;
 
-pub fn configure(cfg: &mut web::ServiceConfig) {
-    let mut api_docs: OpenApi = OpenApiBuilder::new()
-        .info(Info::new("Domus API", "0.1.0"))
-        .servers(Some([Server::new("/v1/")]))
-        .build();
-
-    cfg.app_data(
-        web::JsonConfig::default()
-            .error_handler(|err, _req| shared::json_error_handler::handle_json_error(err).into()),
-    );
-    auth::configure(cfg, &mut api_docs);
+pub fn get_router() -> Router<AppState> {
+    Router::new().nest("/auth", auth::get_router())
 }

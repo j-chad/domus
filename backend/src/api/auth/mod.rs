@@ -1,19 +1,17 @@
-use actix_web::web;
-use api_docs::AuthApiDoc;
-use utoipa::openapi::OpenApi;
-use utoipa::OpenApi as OpenApiTrait;
+use crate::AppState;
+use axum::routing::{get, post};
+use axum::Router;
+use controllers::{get_user, login, logout, refresh_token, register};
 
-pub mod api_docs;
-mod controller;
-mod model;
-mod service;
-pub mod utils;
+pub mod controllers;
+pub mod models;
+mod utils;
 
-pub fn configure(cfg: &mut web::ServiceConfig, api_docs: &mut OpenApi) {
-    cfg.service(
-        web::scope("/auth")
-            .service(controller::register)
-            .service(controller::login),
-    );
-    api_docs.merge(AuthApiDoc::openapi());
+pub fn get_router() -> Router<AppState> {
+    Router::new()
+        .route("/register", post(register))
+        .route("/login", post(login))
+        .route("/logout", post(logout))
+        .route("/refresh_token", post(refresh_token))
+        .route("/user", get(get_user))
 }
