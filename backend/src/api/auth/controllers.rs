@@ -4,6 +4,7 @@ use crate::api::auth::utils::{generate_auth_token, hash_password, verify_passwor
 use crate::api::error::ErrorType::{LoginIncorrect, Unknown, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::api::utils::db::get_db_connection;
+use crate::db::refresh_token::{NewRefreshToken, RefreshToken};
 use crate::db::schema::users;
 use crate::db::user::{NewUser, User};
 use crate::AppState;
@@ -13,7 +14,6 @@ use diesel::prelude::*;
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
 use tracing::{error, info, warn};
-use uuid::Uuid;
 
 /// Register a new user
 #[utoipa::path(
@@ -114,6 +114,17 @@ pub async fn login(
         APIErrorBuilder::error(Unknown).build()
     })?;
 
+    let refresh_token = diesel::insert_into(crate::db::schema::refresh_tokens::table)
+        .values(&NewRefreshToken {
+            user_id: unwrapped_user.id,
+        })
+        .get_result::<RefreshToken>(&mut conn)
+        .await
+        .map_err(|e| {
+            error!(error = %e, "failed to insert refresh token");
+            APIErrorBuilder::error(Unknown).build()
+        })?;
+
     Ok((
         StatusCode::OK,
         Json(AuthResponse {
@@ -121,7 +132,7 @@ pub async fn login(
                 error!(error = %e, "failed to generate auth token");
                 APIErrorBuilder::error(Unknown).build()
             })?,
-            refresh_token: Uuid::new_v4().to_string(),
+            refresh_token: refresh_token.id.to_string(),
         }),
     ))
 }
