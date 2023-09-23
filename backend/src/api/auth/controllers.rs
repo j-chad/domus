@@ -1,6 +1,6 @@
 use super::models::{RegisterNewUserRequest, UserResponse};
 use crate::api::auth::models::{AuthResponse, LoginUserRequest};
-use crate::api::auth::utils::hash_password;
+use crate::api::auth::utils::{generate_auth_token, hash_password};
 use crate::api::error::ErrorType::{Unknown, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::api::utils::db::get_db_connection;
@@ -13,6 +13,7 @@ use diesel::prelude::*;
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
 use tracing::{error, info, warn};
+use uuid::Uuid;
 
 /// Register a new user
 #[utoipa::path(
@@ -99,8 +100,11 @@ pub async fn login(
     Ok((
         StatusCode::OK,
         Json(AuthResponse {
-            access_token: "test".to_string(),
-            refresh_token: "test".to_string(),
+            access_token: generate_auth_token(&_user).map_err(|e| {
+                error!(error = %e, "failed to generate auth token");
+                APIErrorBuilder::error(Unknown).build()
+            })?,
+            refresh_token: Uuid::new_v4().to_string(),
         }),
     ))
 }
