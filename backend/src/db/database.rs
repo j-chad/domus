@@ -13,6 +13,7 @@ pub fn get_connection_pool() -> ConnectionPool {
     let config = AsyncDieselConnectionManager::<AsyncPgConnection>::new(database_url);
 
     Pool::builder(config)
+        .max_size(16)
         .build()
         .expect("Failed to create database pool.")
 }

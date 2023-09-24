@@ -2,6 +2,7 @@ mod api;
 mod config;
 mod db;
 
+use crate::config::Settings;
 use api::api_docs;
 use axum::http::StatusCode;
 use axum::Router;
@@ -16,16 +17,19 @@ use tracing_subscriber::util::SubscriberInitExt;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
-#[derive(Clone)]
 pub struct AppStateInternal {
     pub database_pool: database::ConnectionPool,
+    pub settings: config::Settings,
 }
 
 impl AppStateInternal {
-    fn new() -> Self {
+    fn new(settings: Settings) -> Self {
         let database_pool = database::get_connection_pool();
 
-        Self { database_pool }
+        Self {
+            database_pool,
+            settings,
+        }
     }
 }
 
@@ -36,6 +40,8 @@ async fn main() {
     if cfg!(debug_assertions) {
         dotenvy::dotenv().unwrap();
     }
+
+    let config: Settings = Settings::new().unwrap();
 
     // initialize tracing
     tracing_subscriber::registry()
@@ -58,7 +64,7 @@ async fn main() {
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(DefaultOnResponse::new().latency_unit(LatencyUnit::Millis)),
         )
-        .with_state(Arc::new(AppStateInternal::new()));
+        .with_state(Arc::new(AppStateInternal::new(config.clone())));
 
     // run our app with hyper
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
