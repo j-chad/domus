@@ -4,6 +4,7 @@ use axum::Router;
 pub mod api_docs;
 pub mod auth;
 mod error;
+mod middleware;
 mod utils;
 
 pub fn get_router() -> Router<AppState> {

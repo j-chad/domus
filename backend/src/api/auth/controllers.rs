@@ -175,9 +175,10 @@ pub async fn refresh_token() -> impl IntoResponse {
     path = "/auth/user",
     tag = "auth",
     responses(
-        (status = 501, description = "Not Implemented")
+        (status = 200, description = "Success", body = UserResponse),
+        (status = 401, description = "User not signed in", body = APIError),
     )
 )]
-pub async fn get_user() -> impl IntoResponse {
+pub async fn get_user() -> Result<(StatusCode, Json<UserResponse>), APIError> {
     StatusCode::NOT_IMPLEMENTED
 }

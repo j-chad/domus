@@ -16,6 +16,8 @@ pub enum ErrorType {
     ValidationError,
     UserAlreadyExists,
     LoginIncorrect,
+    Unauthorized,
+    Forbidden,
 }
 
 impl ErrorType {
@@ -25,6 +27,8 @@ impl ErrorType {
             ErrorType::ValidationError => concatcp!(ERROR_URI, "validation-error"),
             ErrorType::UserAlreadyExists => concatcp!(ERROR_URI, "user-already-exists"),
             ErrorType::LoginIncorrect => concatcp!(ERROR_URI, "login-incorrect"),
+            ErrorType::Unauthorized => concatcp!(ERROR_URI, "unauthorized"),
+            ErrorType::Forbidden => concatcp!(ERROR_URI, "forbidden"),
         }
     }
 
@@ -34,6 +38,8 @@ impl ErrorType {
             ErrorType::ValidationError => "Your request is not valid.",
             ErrorType::UserAlreadyExists => "A user with that email already exists.",
             ErrorType::LoginIncorrect => "Login Incorrect.",
+            ErrorType::Unauthorized => "You have not been authorized to perform this action.",
+            ErrorType::Forbidden => "You are not allowed to perform this action.",
         }
     }
 
@@ -43,6 +49,8 @@ impl ErrorType {
             ErrorType::ValidationError => StatusCode::BAD_REQUEST,
             ErrorType::UserAlreadyExists => StatusCode::CONFLICT,
             ErrorType::LoginIncorrect => StatusCode::UNAUTHORIZED,
+            ErrorType::Unauthorized => StatusCode::UNAUTHORIZED,
+            ErrorType::Forbidden => StatusCode::FORBIDDEN,
         }
     }
 
