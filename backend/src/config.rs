@@ -10,7 +10,6 @@ pub struct Auth {
 #[derive(Debug, Deserialize, Clone)]
 pub struct Server {
     pub host: String,
-    pub port: u16,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -33,8 +32,6 @@ impl Settings {
             .add_source(File::with_name("config"))
             .add_source(Environment::with_prefix("domus"))
             .build()?;
-
-        println!("{:?}", s);
 
         s.try_deserialize()
     }

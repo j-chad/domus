@@ -19,12 +19,12 @@ use utoipa_swagger_ui::SwaggerUi;
 
 pub struct AppStateInternal {
     pub database_pool: database::ConnectionPool,
-    pub settings: config::Settings,
+    pub settings: Settings,
 }
 
 impl AppStateInternal {
     fn new(settings: Settings) -> Self {
-        let database_pool = database::get_connection_pool();
+        let database_pool = database::get_connection_pool(&settings);
 
         Self {
             database_pool,
@@ -60,14 +60,14 @@ async fn main() {
         .nest("/v1", api::get_router())
         .fallback(fallback)
         .layer(
-            TraceLayer::new_for_http() // .make_span_with(DefaultMakeSpan::new().include_headers(true))
+            TraceLayer::new_for_http()
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(DefaultOnResponse::new().latency_unit(LatencyUnit::Millis)),
         )
         .with_state(Arc::new(AppStateInternal::new(config.clone())));
 
     // run our app with hyper
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = config.server.host.parse::<SocketAddr>().unwrap();
     tracing::info!("listening on http://{}", addr);
     tracing::debug!("docs at http://{}/swagger-ui", addr);
     axum::Server::bind(&addr)
