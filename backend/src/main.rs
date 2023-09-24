@@ -1,4 +1,5 @@
 mod api;
+mod config;
 mod db;
 
 use api::api_docs;
@@ -32,7 +33,9 @@ pub type AppState = Arc<AppStateInternal>;
 
 #[tokio::main]
 async fn main() {
-    dotenvy::dotenv().unwrap();
+    if cfg!(debug_assertions) {
+        dotenvy::dotenv().unwrap();
+    }
 
     // initialize tracing
     tracing_subscriber::registry()
