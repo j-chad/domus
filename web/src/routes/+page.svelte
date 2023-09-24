@@ -18,4 +18,5 @@
 <a class="btn btn-primary" href="/auth/login">Login</a>
 <a class="btn btn-primary" href="/auth/register">Register</a>
 <a class="btn btn-primary" href="/registeadsar">404</a>
+<a class='btn btn-primary' href='/tasks'>Task Tracker</a>
 <button class="btn btn-info" on:click={changeTheme}>Change Theme</button>
