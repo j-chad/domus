@@ -9,7 +9,7 @@ pub struct Auth {
 }
 
 #[derive(Debug, Deserialize, Clone)]
-pub struct Server {
+pub struct App {
     pub host: String,
 }
 
@@ -21,7 +21,7 @@ pub struct Database {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
-    pub server: Server,
+    pub server: App,
     pub database: Database,
     pub auth: Auth,
 }
