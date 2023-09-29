@@ -1,5 +1,6 @@
 use config::{Config, ConfigError, Environment, File};
 use serde::Deserialize;
+use std::env;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Auth {
@@ -27,9 +28,12 @@ pub struct Settings {
 
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
-        //config file is project_root/config.toml
+        let run_mode = env::var("DOMUS_ENV").or(Ok("prod".to_string()))?;
+
         let s = Config::builder()
-            .add_source(File::with_name("config"))
+            .add_source(File::with_name("config/default"))
+            .add_source(File::with_name(&format!("config/{}", run_mode)).required(false))
+            .add_source(File::with_name("config/local").required(false))
             .add_source(Environment::with_prefix("domus"))
             .build()?;
 
