@@ -25,7 +25,7 @@ use tracing::{error, info, warn};
         content = RegisterNewUserRequest
     ),
     responses(
-        (status = 201, description = "Created new user successfully", body = UserResponse),
+        (status = 201, description = "Created new user successfully", body = AuthResponse),
         (status = 400, description = "Bad Request", body = APIError),
         (status = 409, description = "Conflict. User already exists.", body = APIError),
     )
@@ -33,7 +33,7 @@ use tracing::{error, info, warn};
 pub async fn register(
     State(state): State<AppState>,
     Json(payload): Json<RegisterNewUserRequest>,
-) -> Result<(StatusCode, Json<UserResponse>), APIError> {
+) -> Result<(StatusCode, Json<AuthResponse>), APIError> {
     info!(email = payload.email, "registering new user");
 
     let mut conn = get_db_connection(&state.database_pool).await?;
@@ -50,7 +50,7 @@ pub async fn register(
         password: hashed_password,
     };
 
-    let new_user_response: UserResponse = diesel::insert_into(users::table)
+    let new_user: User = diesel::insert_into(users::table)
         .values(&new_user)
         .returning(User::as_returning())
         .get_result(&mut conn)
@@ -65,10 +65,30 @@ pub async fn register(
                 .detail("If you already have an account, try logging in.")
                 .with_field("email", new_user.email.into())
                 .build()
-        })?
-        .into();
+        })?;
 
-    Ok((StatusCode::CREATED, Json(new_user_response)))
+    let refresh_token = diesel::insert_into(crate::db::schema::refresh_tokens::table)
+        .values(&NewRefreshToken {
+            user_id: new_user.id,
+        })
+        .get_result::<RefreshToken>(&mut conn)
+        .await
+        .map_err(|e| {
+            error!(error = %e, "failed to insert refresh token");
+            APIErrorBuilder::from_error(e).build()
+        })?;
+
+    Ok((
+        StatusCode::CREATED,
+        Json(AuthResponse {
+            access_token: generate_auth_token(&new_user, &state.settings.auth.private_key)
+                .map_err(|e| {
+                    error!(error = %e, "failed to generate auth token");
+                    APIErrorBuilder::from_error(e).build()
+                })?,
+            refresh_token: refresh_token.id.to_string(),
+        }),
+    ))
 }
 
 /// Login with an existing users credentials
