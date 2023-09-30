@@ -33,4 +33,6 @@ argon2 = "0.5.1"
 pasetors = { version = "0.6.7", features = ["paserk"] }
 config = "0.13.3"
 toml = "0.8.0"
+anyhow = "1.0.75"
+thiserror = "1.0.49"
 

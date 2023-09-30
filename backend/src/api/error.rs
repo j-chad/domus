@@ -5,25 +5,40 @@ use const_format::concatcp;
 use serde::{Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
+use thiserror::Error;
 use tracing::error;
 use utoipa::ToSchema;
 
 const ERROR_URI: &str = "tag:domus@jacksonc.dev,2023:errors/";
 
-#[allow(dead_code)] // TODO: Remove this
+#[derive(Error, Debug)]
 pub enum ErrorType {
+    #[error("An unknown error has occurred.")]
     Unknown,
+
+    #[error("An unknown error has occurred.")]
+    ForeignError(#[from] anyhow::Error),
+
+    #[error("Your request is not valid.")]
     ValidationError,
+
+    #[error("A user with that email already exists.")]
     UserAlreadyExists,
+
+    #[error("Login Incorrect.")]
     LoginIncorrect,
+
+    #[error("You have not been authorized to perform this action.")]
     Unauthorized,
+
+    #[error("You are not allowed to perform this action.")]
     Forbidden,
 }
 
 impl ErrorType {
     pub fn get_type(&self) -> &'static str {
         match self {
-            ErrorType::Unknown => "about:blank",
+            ErrorType::Unknown | ErrorType::ForeignError(_) => "about:blank",
             ErrorType::ValidationError => concatcp!(ERROR_URI, "validation-error"),
             ErrorType::UserAlreadyExists => concatcp!(ERROR_URI, "user-already-exists"),
             ErrorType::LoginIncorrect => concatcp!(ERROR_URI, "login-incorrect"),
@@ -32,20 +47,13 @@ impl ErrorType {
         }
     }
 
-    pub fn get_title(&self) -> &'static str {
-        match self {
-            ErrorType::Unknown => "An unknown error has occurred.",
-            ErrorType::ValidationError => "Your request is not valid.",
-            ErrorType::UserAlreadyExists => "A user with that email already exists.",
-            ErrorType::LoginIncorrect => "Login Incorrect.",
-            ErrorType::Unauthorized => "You have not been authorized to perform this action.",
-            ErrorType::Forbidden => "You are not allowed to perform this action.",
-        }
+    pub fn get_title(&self) -> String {
+        self.to_string()
     }
 
     pub fn get_status(&self) -> StatusCode {
         match self {
-            ErrorType::Unknown => StatusCode::INTERNAL_SERVER_ERROR,
+            ErrorType::Unknown | ErrorType::ForeignError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             ErrorType::ValidationError => StatusCode::BAD_REQUEST,
             ErrorType::UserAlreadyExists => StatusCode::CONFLICT,
             ErrorType::LoginIncorrect => StatusCode::UNAUTHORIZED,
@@ -97,6 +105,24 @@ pub struct APIError {
     #[serde(flatten)]
     #[serde(skip_serializing_if = "Option::is_none")]
     extra: Option<HashMap<String, Value>>,
+}
+
+impl From<ErrorType> for APIError {
+    fn from(value: ErrorType) -> Self {
+        if let ErrorType::ForeignError(e) = &value {
+            return APIErrorBuilder::error(value)
+                .with_field("cause", format!("{}", e).into())
+                .build();
+        }
+
+        return APIErrorBuilder::error(value).build();
+    }
+}
+
+impl From<anyhow::Error> for APIError {
+    fn from(error: anyhow::Error) -> Self {
+        APIError::from(ErrorType::ForeignError(error))
+    }
 }
 
 impl IntoResponse for APIError {
