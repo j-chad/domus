@@ -51,7 +51,7 @@ pub async fn create_new_user(conn: &mut Connection, user: NewUser) -> Result<Use
         .get_result(conn)
         .await
         .map_err(|e| {
-            warn!(email = user.email, "failed to register new user: {:?}", e);
+            warn!(email = user.email, "failed to register new user: {}", e);
             APIErrorBuilder::new(UserAlreadyExists)
                 .cause(e)
                 .detail("If you already have an account, try logging in.")
@@ -86,7 +86,7 @@ pub async fn generate_new_refresh_token(
 ) -> Result<RefreshToken, APIError> {
     delete_refresh_token_if_exists(conn, user_id).await?;
 
-    diesel::insert_into(crate::db::schema::refresh_tokens::table)
+    diesel::insert_into(refresh_tokens::table)
         .values(&NewRefreshToken { user_id })
         .get_result::<RefreshToken>(conn)
         .await
