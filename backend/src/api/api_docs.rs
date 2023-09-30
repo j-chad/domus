@@ -12,7 +12,7 @@ use utoipa::{Modify, OpenApi};
 	paths(
 		auth_routes::register,
 		auth_routes::login,
-		auth_routes::logout,
+		auth_routes::delete_refresh_token,
 		auth_routes::refresh_token,
 		auth_routes::get_user,
 	),

@@ -118,8 +118,8 @@ pub async fn login(
 ///
 /// This will invalidate the refresh token
 #[utoipa::path(
-    post,
-    path = "/auth/logout",
+    delete,
+    path = "/auth/refresh_token",
     tag = "auth",
     security(
         ("api_token" = [])
@@ -128,7 +128,7 @@ pub async fn login(
         (status = 204, description = "Logout successful"),
     )
 )]
-pub async fn logout(
+pub async fn delete_refresh_token(
     State(state): State<AppState>,
     Extension(user): Extension<CurrentUser>,
 ) -> Result<StatusCode, APIError> {
