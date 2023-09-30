@@ -1,14 +1,19 @@
 use super::error::{APIError, APIErrorBuilder, ErrorType::Unauthorized};
 use crate::AppState;
-use axum::extract::State;
-use axum::http::{header, HeaderMap, HeaderValue, Request};
-use axum::middleware::Next;
-use axum::response::IntoResponse;
-use pasetors::claims::{Claims, ClaimsValidationRules};
-use pasetors::keys::AsymmetricPublicKey;
-use pasetors::token::{TrustedToken, UntrustedToken};
-use pasetors::version4::V4;
-use pasetors::{public, Public};
+use axum::{
+    extract::State,
+    http::{header, HeaderMap, HeaderValue, Request},
+    middleware::Next,
+    response::Response,
+};
+use pasetors::{
+    claims::{Claims, ClaimsValidationRules},
+    keys::AsymmetricPublicKey,
+    public,
+    token::{TrustedToken, UntrustedToken},
+    version4::V4,
+    Public,
+};
 use tracing::info;
 use uuid::Uuid;
 
@@ -17,11 +22,11 @@ pub struct CurrentUser {
 }
 
 /// Middleware that validates a PASETO token and adds user info to the request.
-async fn auth<B>(
-    State(state): &State<AppState>,
+pub async fn auth<B>(
+    State(state): State<AppState>,
     mut req: Request<B>,
     next: Next<B>,
-) -> Result<impl IntoResponse, APIError> {
+) -> Result<Response, APIError> {
     let untrusted_token = get_token(req.headers())?;
     let trusted_token = validate_token(untrusted_token, &state.settings.auth.public_key)?;
 

@@ -52,19 +52,21 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
+    let state = Arc::new(AppStateInternal::new(config.clone()));
+
     let app = Router::new()
         .merge(
             SwaggerUi::new("/swagger-ui")
                 .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
         )
-        .nest("/v1", api::get_router())
+        .nest("/v1", api::get_router(state.clone()))
         .fallback(fallback)
         .layer(
             TraceLayer::new_for_http()
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(DefaultOnResponse::new().latency_unit(LatencyUnit::Millis)),
         )
-        .with_state(Arc::new(AppStateInternal::new(config.clone())));
+        .with_state(state);
 
     // run our app with hyper
     let addr = config.server.host.parse::<SocketAddr>().unwrap();

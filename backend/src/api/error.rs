@@ -5,7 +5,7 @@ use const_format::concatcp;
 use serde::{Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 use thiserror::Error;
 use tracing::error;
 use utoipa::ToSchema;
@@ -133,7 +133,6 @@ impl IntoResponse for APIError {
             .body(Json(self).into_response().into_body());
 
         // This should never fail, but if it does, we want to know about it.
-        error!(resp=?resp, "Failed to build error response");
         resp.unwrap_or_else(|e| {
             error!(error = %e, "Failed to build error response");
             (
@@ -169,15 +168,15 @@ impl APIErrorBuilder {
     /// Create a new unknown error from the given error.
     ///
     /// This is a shorthand for `APIErrorBuilder::new(Unknown).cause(error)`.
-    pub fn from_error(error: impl Display) -> Self {
+    pub fn from_error(error: impl Debug) -> Self {
         Self::new(ErrorType::Unknown).cause(error)
     }
 
     /// Adds a cause field to the error.
     ///
     /// Shorthand for `with_field("cause", error.to_string().into())`.
-    pub fn cause(self, error: impl Display) -> Self {
-        self.with_field("cause", error.to_string().into())
+    pub fn cause(self, error: impl Debug) -> Self {
+        self.with_field("cause", format!("{:#?}", error).into())
     }
 
     /// Add additional information to the error.

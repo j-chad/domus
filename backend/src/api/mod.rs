@@ -7,6 +7,6 @@ mod error;
 mod middleware;
 mod utils;
 
-pub fn get_router() -> Router<AppState> {
-    Router::new().nest("/auth", auth::get_router())
+pub fn get_router(state: AppState) -> Router<AppState> {
+    Router::new().nest("/auth", auth::get_router(state))
 }
