@@ -1,7 +1,7 @@
 use super::models::{RegisterNewUserRequest, UserResponse};
 use crate::api::auth::models::{AuthResponse, LoginUserRequest};
 use crate::api::auth::utils::{generate_auth_token, hash_password, verify_password};
-use crate::api::error::ErrorType::{LoginIncorrect, Unknown, UserAlreadyExists};
+use crate::api::error::ErrorType::{LoginIncorrect, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::api::utils::db::get_db_connection;
 use crate::db::refresh_token::{NewRefreshToken, RefreshToken};

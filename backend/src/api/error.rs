@@ -1,4 +1,3 @@
-use crate::api::error::ErrorType::Unknown;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
@@ -13,6 +12,7 @@ use utoipa::ToSchema;
 
 const ERROR_URI: &str = "tag:domus@jacksonc.dev,2023:errors/";
 
+#[allow(dead_code)]
 #[derive(Error, Debug)]
 pub enum ErrorType {
     #[error("An unknown error has occurred.")]
@@ -112,12 +112,10 @@ pub struct APIError {
 impl From<ErrorType> for APIError {
     fn from(value: ErrorType) -> Self {
         if let ErrorType::ForeignError(e) = &value {
-            return APIErrorBuilder::new(value)
-                .with_field("cause", format!("{}", e).into())
-                .build();
+            return APIErrorBuilder::from_error(e).build();
         }
 
-        return APIErrorBuilder::new(value).build();
+        APIErrorBuilder::new(value).build()
     }
 }
 
@@ -172,7 +170,7 @@ impl APIErrorBuilder {
     ///
     /// This is a shorthand for `APIErrorBuilder::new(Unknown).cause(error)`.
     pub fn from_error(error: impl Display) -> Self {
-        Self::new(Unknown).cause(error)
+        Self::new(ErrorType::Unknown).cause(error)
     }
 
     /// Adds a cause field to the error.
