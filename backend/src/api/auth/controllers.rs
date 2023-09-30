@@ -1,6 +1,8 @@
 use super::models::RegisterNewUserRequest;
 use crate::api::auth::models::{RefreshTokenRequest, UserResponse};
-use crate::api::auth::utils::{find_refresh_token, find_user_by_id};
+use crate::api::auth::utils::{
+    delete_refresh_token_if_exists, find_refresh_token, find_user_by_id,
+};
 use crate::api::error::ErrorType::Unauthorized;
 use crate::api::middleware::CurrentUser;
 use crate::api::utils::friendly_id::{ItemIdType, ToFriendlyId};
@@ -20,7 +22,7 @@ use crate::{
     db::user::NewUser,
     AppState,
 };
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Extension, Json};
+use axum::{extract::State, http::StatusCode, Extension, Json};
 use tracing::{error, info};
 
 /// Register a new user
@@ -113,16 +115,27 @@ pub async fn login(
 }
 
 /// Logout the current user
+///
+/// This will invalidate the refresh token
 #[utoipa::path(
     post,
     path = "/auth/logout",
     tag = "auth",
+    security(
+        ("api_token" = [])
+    ),
     responses(
-        (status = 501, description = "Not Implemented")
+        (status = 204, description = "Logout successful"),
     )
 )]
-pub async fn logout() -> impl IntoResponse {
-    StatusCode::NOT_IMPLEMENTED
+pub async fn logout(
+    State(state): State<AppState>,
+    Extension(user): Extension<CurrentUser>,
+) -> Result<StatusCode, APIError> {
+    let mut conn = get_db_connection(&state.database_pool).await?;
+    delete_refresh_token_if_exists(&mut conn, user.id).await?;
+
+    Ok(StatusCode::NO_CONTENT)
 }
 
 /// Use a refresh token to get a new access token

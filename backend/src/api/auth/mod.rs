@@ -10,10 +10,10 @@ mod utils;
 
 pub fn get_router(state: AppState) -> Router<AppState> {
     Router::new()
+        .route("/logout", post(logout))
         .route("/user", get(get_user))
         .route_layer(middleware::from_fn_with_state(state.clone(), auth))
         .route("/register", post(register))
         .route("/login", post(login))
-        .route("/logout", post(logout))
         .route("/refresh_token", post(refresh_token))
 }

@@ -5,7 +5,7 @@ use const_format::concatcp;
 use serde::{Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 use thiserror::Error;
 use tracing::error;
 use utoipa::ToSchema;
@@ -168,15 +168,15 @@ impl APIErrorBuilder {
     /// Create a new unknown error from the given error.
     ///
     /// This is a shorthand for `APIErrorBuilder::new(Unknown).cause(error)`.
-    pub fn from_error(error: impl Debug) -> Self {
+    pub fn from_error(error: impl Display) -> Self {
         Self::new(ErrorType::Unknown).cause(error)
     }
 
     /// Adds a cause field to the error.
     ///
     /// Shorthand for `with_field("cause", error.to_string().into())`.
-    pub fn cause(self, error: impl Debug) -> Self {
-        self.with_field("cause", format!("{:#?}", error).into())
+    pub fn cause(self, error: impl Display) -> Self {
+        self.with_field("cause", format!("{}", error).into())
     }
 
     /// Add additional information to the error.

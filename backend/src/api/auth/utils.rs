@@ -96,7 +96,7 @@ pub async fn generate_new_refresh_token(
         })
 }
 
-async fn delete_refresh_token_if_exists(
+pub async fn delete_refresh_token_if_exists(
     conn: &mut Connection,
     user_id: Uuid,
 ) -> Result<(), APIError> {
