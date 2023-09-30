@@ -1,6 +1,9 @@
 use super::models::{RegisterNewUserRequest, UserResponse};
 use crate::api::auth::models::{AuthResponse, LoginUserRequest};
-use crate::api::auth::utils::{generate_auth_token, hash_password, verify_password};
+use crate::api::auth::utils::{
+    create_new_user, generate_auth_token, generate_auth_tokens, generate_new_refresh_token,
+    hash_password, verify_password,
+};
 use crate::api::error::ErrorType::{LoginIncorrect, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::api::utils::db::get_db_connection;
@@ -36,59 +39,23 @@ pub async fn register(
 ) -> Result<(StatusCode, Json<AuthResponse>), APIError> {
     info!(email = payload.email, "registering new user");
 
+    let hashed_password = hash_password(&payload.password)?;
+
     let mut conn = get_db_connection(&state.database_pool).await?;
+    let user = create_new_user(
+        &mut conn,
+        NewUser {
+            email: payload.email,
+            first_name: payload.first_name,
+            last_name: payload.last_name,
+            password: hashed_password,
+        },
+    )
+    .await?;
 
-    let hashed_password = hash_password(&payload.password).map_err(|err| {
-        error!(error = %err, "failed to hash password");
-        APIErrorBuilder::from_error(err).build()
-    })?;
+    let tokens = generate_auth_tokens(&mut conn, &user, &state.settings.auth.private_key).await?;
 
-    let new_user = NewUser {
-        email: payload.email,
-        first_name: payload.first_name,
-        last_name: payload.last_name,
-        password: hashed_password,
-    };
-
-    let new_user: User = diesel::insert_into(users::table)
-        .values(&new_user)
-        .returning(User::as_returning())
-        .get_result(&mut conn)
-        .await
-        .map_err(|e| {
-            warn!(
-                email = new_user.email,
-                "failed to register new user: {:?}", e
-            );
-            APIErrorBuilder::new(UserAlreadyExists)
-                .cause(e)
-                .detail("If you already have an account, try logging in.")
-                .with_field("email", new_user.email.into())
-                .build()
-        })?;
-
-    let refresh_token = diesel::insert_into(crate::db::schema::refresh_tokens::table)
-        .values(&NewRefreshToken {
-            user_id: new_user.id,
-        })
-        .get_result::<RefreshToken>(&mut conn)
-        .await
-        .map_err(|e| {
-            error!(error = %e, "failed to insert refresh token");
-            APIErrorBuilder::from_error(e).build()
-        })?;
-
-    Ok((
-        StatusCode::CREATED,
-        Json(AuthResponse {
-            access_token: generate_auth_token(&new_user, &state.settings.auth.private_key)
-                .map_err(|e| {
-                    error!(error = %e, "failed to generate auth token");
-                    APIErrorBuilder::from_error(e).build()
-                })?,
-            refresh_token: refresh_token.id.to_string(),
-        }),
-    ))
+    Ok((StatusCode::CREATED, Json(tokens)))
 }
 
 /// Login with an existing users credentials
