@@ -1,0 +1,10 @@
+version: 3
+
+tasks:
+  local-env:
+    cmds:
+      - cargo run --bin setup-local-config
+
+  setup-infra:
+    cmds:
+      - docker-compose up -d
