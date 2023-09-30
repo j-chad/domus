@@ -3,13 +3,14 @@ use crate::api::error::ErrorType::UserAlreadyExists;
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::db::database::Connection;
 use crate::db::refresh_token::{NewRefreshToken, RefreshToken};
-use crate::db::schema::users;
+use crate::db::schema::{refresh_tokens, users};
 use crate::db::user::{NewUser, User};
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHasher, PasswordVerifier};
+use diesel::dsl::exists;
 use diesel::prelude::*;
-use diesel::SelectableHelper;
+use diesel::{select, SelectableHelper};
 use diesel_async::RunQueryDsl;
 use pasetors::claims::Claims;
 use pasetors::errors::Error as ClaimError;
@@ -83,6 +84,8 @@ pub async fn generate_new_refresh_token(
     conn: &mut Connection,
     user_id: Uuid,
 ) -> Result<RefreshToken, APIError> {
+    delete_refresh_token_if_exists(conn, user_id).await?;
+
     diesel::insert_into(crate::db::schema::refresh_tokens::table)
         .values(&NewRefreshToken { user_id })
         .get_result::<RefreshToken>(conn)
@@ -91,6 +94,33 @@ pub async fn generate_new_refresh_token(
             error!(error = %e, "failed to insert refresh token");
             APIErrorBuilder::from_error(e).build()
         })
+}
+
+async fn delete_refresh_token_if_exists(
+    conn: &mut Connection,
+    user_id: Uuid,
+) -> Result<(), APIError> {
+    let token_exists: bool = select(exists(
+        refresh_tokens::table.filter(refresh_tokens::user_id.eq(user_id)),
+    ))
+    .get_result::<bool>(conn)
+    .await
+    .map_err(|e| {
+        error!(error = %e, "failed to check if refresh token exists");
+        APIErrorBuilder::from_error(e).build()
+    })?;
+
+    if token_exists {
+        diesel::delete(refresh_tokens::table.filter(refresh_tokens::user_id.eq(user_id)))
+            .execute(conn)
+            .await
+            .map_err(|e| {
+                error!(error = %e, "failed to delete refresh token");
+                APIErrorBuilder::from_error(e).build()
+            })?;
+    }
+
+    Ok(())
 }
 
 pub async fn find_user_by_email(
