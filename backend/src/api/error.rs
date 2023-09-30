@@ -106,7 +106,7 @@ pub struct APIError {
     #[schema(additional_properties = true)]
     #[serde(flatten)]
     #[serde(skip_serializing_if = "Option::is_none")]
-    extra: Option<HashMap<String, Value>>,
+    extra: Box<Option<HashMap<String, Value>>>,
 }
 
 impl From<ErrorType> for APIError {
@@ -225,7 +225,7 @@ impl APIErrorBuilder {
                 .detail
                 .or(self.error_type.get_detail().map(|s| s.to_string())),
             instance: self.instance,
-            extra: self.extra,
+            extra: Box::from(self.extra),
             error_type: self.error_type.get_type().to_string(),
         }
     }

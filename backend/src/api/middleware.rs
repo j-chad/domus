@@ -1,61 +1,103 @@
-use super::error::APIError;
-use crate::api::error::APIErrorBuilder;
-use crate::api::error::ErrorType::{ForeignError, Unauthorized};
-use crate::config::Auth;
+use super::error::{APIError, APIErrorBuilder, ErrorType::Unauthorized};
 use crate::AppState;
 use axum::extract::State;
-use axum::http::{header, Request};
+use axum::http::{header, HeaderMap, HeaderValue, Request};
 use axum::middleware::Next;
 use axum::response::IntoResponse;
-use pasetors::claims::ClaimsValidationRules;
+use pasetors::claims::{Claims, ClaimsValidationRules};
 use pasetors::keys::AsymmetricPublicKey;
-use pasetors::token::UntrustedToken;
+use pasetors::token::{TrustedToken, UntrustedToken};
 use pasetors::version4::V4;
 use pasetors::{public, Public};
+use tracing::info;
+use uuid::Uuid;
 
+pub struct CurrentUser {
+    pub id: Uuid,
+}
+
+/// Middleware that validates a PASETO token and adds user info to the request.
 async fn auth<B>(
     State(state): &State<AppState>,
-    req: Request<B>,
+    mut req: Request<B>,
     next: Next<B>,
 ) -> Result<impl IntoResponse, APIError> {
-    let token = req
-        .headers()
-        .get(header::AUTHORIZATION)
-        .and_then(|auth_header| auth_header.to_str().ok())
-        .and_then(|auth_value| {
-            if auth_value.starts_with("Bearer ") {
-                Some(auth_value[7..].to_owned())
-            } else {
-                None
-            }
-        })
-        .ok_or(
-            APIErrorBuilder::error(Unauthorized)
-                .detail("You are not logged in. Please provide a token.")
-                .build(),
-        )?;
+    let untrusted_token = get_token(req.headers())?;
+    let trusted_token = validate_token(untrusted_token, &state.settings.auth.public_key)?;
 
-    let untrusted_token = UntrustedToken::<Public, V4>::try_from(&token).or(Err(
-        APIErrorBuilder::error(Unauthorized)
-            .detail("The token you provided is invalid.")
-            .build(),
-    ))?;
+    let current_user = get_user_details(&trusted_token)?;
+    req.extensions_mut().insert(current_user);
 
+    Ok(next.run(req).await)
+}
+
+fn validate_token(
+    token: UntrustedToken<Public, V4>,
+    public_key: &str,
+) -> Result<TrustedToken, APIError> {
     let mut rules = ClaimsValidationRules::new();
     rules.validate_issuer_with("domus-api.jacksonc.dev");
     rules.validate_audience_with("domus.jacksonc.dev");
 
-    let Auth { public_key, .. } = &state.settings.auth;
-    let key = AsymmetricPublicKey::<V4>::try_from(public_key.as_str()).map_err(|_| {
-        APIErrorBuilder::error(Unauthorized)
+    let key = AsymmetricPublicKey::<V4>::try_from(public_key)
+        .map_err(|e| APIErrorBuilder::from_error(e).build())?;
+
+    public::verify(&key, &token, &rules, None, None).map_err(|e| {
+        APIErrorBuilder::new(Unauthorized)
+            .cause(e)
+            .detail("The token you provided is not trusted.")
+            .build()
+    })
+}
+
+fn get_token(headers: &HeaderMap<HeaderValue>) -> Result<UntrustedToken<Public, V4>, APIError> {
+    let token = headers
+        .get(header::AUTHORIZATION)
+        .and_then(|auth_header| auth_header.to_str().ok())
+        .and_then(|auth_value| auth_value.strip_prefix("Bearer "))
+        .ok_or(
+            APIErrorBuilder::new(Unauthorized)
+                .detail("You are not logged in. Please provide a token.")
+                .build(),
+        )?;
+
+    UntrustedToken::try_from(token).map_err(|e| {
+        APIErrorBuilder::new(Unauthorized)
+            .cause(e)
+            .detail("The token you provided is invalid.")
+            .build()
+    })
+}
+
+fn get_user_details(token: &TrustedToken) -> Result<CurrentUser, APIError> {
+    let claims = token.payload_claims().ok_or_else(|| {
+        APIErrorBuilder::new(Unauthorized)
             .detail("The token you provided is invalid.")
             .build()
     })?;
-    let trusted_token = public::verify(&key, &untrusted_token, &rules, None, None).or(Err(
-        APIErrorBuilder::error(Unauthorized)
-            .detail("The token you provided is not trusted.")
-            .build(),
-    ))?;
 
-    Ok(next.run(req).await)
+    Ok(CurrentUser {
+        id: get_user_id(claims)?,
+    })
+}
+
+fn get_user_id(claims: &Claims) -> Result<Uuid, APIError> {
+    let sub_claim = claims
+        .get_claim("sub")
+        .and_then(|c| c.as_str())
+        .ok_or_else(|| {
+            info!(claims = ?claims, "Token claims contained an invalid subject.");
+
+            APIErrorBuilder::new(Unauthorized)
+                .detail("The token you provided is invalid.")
+                .build()
+        })?;
+
+    Uuid::parse_str(sub_claim).map_err(|e| {
+        info!(error = %e, "Token claims contained an invalid subject.");
+
+        APIErrorBuilder::new(Unauthorized)
+            .detail("The token you provided is invalid.")
+            .build()
+    })
 }
