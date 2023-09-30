@@ -145,6 +145,10 @@ fn generate_auth_token(user: &User, private_key: &str) -> Result<String, ClaimEr
     claims.audience("domus.jacksonc.dev")?;
     claims.token_identifier(Uuid::new_v4().to_string().as_str())?;
 
+    claims.add_additional("email", user.email.as_str())?;
+    claims.add_additional("first_name", user.first_name.as_str())?;
+    claims.add_additional("last_name", user.last_name.as_str())?;
+
     let key = AsymmetricSecretKey::<V4>::try_from(private_key)?;
     public::sign(&key, &claims, None, None)
 }

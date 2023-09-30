@@ -17,8 +17,12 @@ use pasetors::{
 use tracing::info;
 use uuid::Uuid;
 
+#[derive(Clone)]
 pub struct CurrentUser {
     pub id: Uuid,
+    pub email: String,
+    pub first_name: String,
+    pub last_name: String,
 }
 
 /// Middleware that validates a PASETO token and adds user info to the request.
@@ -75,34 +79,46 @@ fn get_token(headers: &HeaderMap<HeaderValue>) -> Result<UntrustedToken<Public, 
 }
 
 fn get_user_details(token: &TrustedToken) -> Result<CurrentUser, APIError> {
-    let claims = token.payload_claims().ok_or_else(|| {
+    let claims = token.payload_claims().ok_or(
         APIErrorBuilder::new(Unauthorized)
             .detail("The token you provided is invalid.")
-            .build()
-    })?;
+            .build(),
+    )?;
+
+    let id = get_user_id(claims)?;
+    let email = get_claim(claims, "email")?;
+    let first_name = get_claim(claims, "first_name")?;
+    let last_name = get_claim(claims, "last_name")?;
 
     Ok(CurrentUser {
-        id: get_user_id(claims)?,
+        id,
+        email,
+        first_name,
+        last_name,
     })
 }
 
 fn get_user_id(claims: &Claims) -> Result<Uuid, APIError> {
-    let sub_claim = claims
-        .get_claim("sub")
-        .and_then(|c| c.as_str())
-        .ok_or_else(|| {
-            info!(claims = ?claims, "Token claims contained an invalid subject.");
+    let sub_claim = get_claim(claims, "sub")?;
 
-            APIErrorBuilder::new(Unauthorized)
-                .detail("The token you provided is invalid.")
-                .build()
-        })?;
-
-    Uuid::parse_str(sub_claim).map_err(|e| {
+    Uuid::parse_str(sub_claim.as_str()).map_err(|e| {
         info!(error = %e, "Token claims contained an invalid subject.");
-
         APIErrorBuilder::new(Unauthorized)
+            .cause(e)
             .detail("The token you provided is invalid.")
             .build()
     })
+}
+
+fn get_claim(claims: &Claims, claim_name: &str) -> Result<String, APIError> {
+    claims
+        .get_claim(claim_name)
+        .and_then(|c| c.as_str())
+        .map(|s| s.to_string())
+        .ok_or_else(|| {
+            info!(claims = ?claims, claim_name = claim_name, "claim missing from token.");
+            APIErrorBuilder::new(Unauthorized)
+                .detail("The token you provided is invalid.")
+                .build()
+        })
 }

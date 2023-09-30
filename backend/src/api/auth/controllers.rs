@@ -1,4 +1,7 @@
 use super::models::RegisterNewUserRequest;
+use crate::api::auth::models::UserResponse;
+use crate::api::middleware::CurrentUser;
+use crate::api::utils::friendly_id::{ItemIdType, ToFriendlyId};
 use crate::{
     api::{
         auth::models::{AuthResponse, LoginUserRequest},
@@ -15,7 +18,7 @@ use crate::{
     db::user::NewUser,
     AppState,
 };
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use axum::{extract::State, http::StatusCode, response::IntoResponse, Extension, Json};
 use tracing::{error, info};
 
 /// Register a new user
@@ -152,6 +155,15 @@ pub async fn refresh_token() -> impl IntoResponse {
         (status = 401, description = "User not signed in", body = APIError),
     )
 )]
-pub async fn get_user() -> impl IntoResponse {
-    StatusCode::NOT_IMPLEMENTED
+pub async fn get_user(
+    Extension(current_user): Extension<CurrentUser>,
+) -> Result<(StatusCode, Json<UserResponse>), APIError> {
+    let response = UserResponse {
+        id: current_user.id.to_friendly_id(ItemIdType::User),
+        email: current_user.email,
+        first_name: current_user.first_name,
+        last_name: current_user.last_name,
+    };
+
+    Ok((StatusCode::OK, Json(response)))
 }
