@@ -40,7 +40,7 @@ pub async fn register(
 
     let hashed_password = hash_password(&payload.password).map_err(|err| {
         error!(error = %err, "failed to hash password");
-        APIErrorBuilder::error(Unknown).build()
+        APIErrorBuilder::from_error(err).build()
     })?;
 
     let new_user = NewUser {
@@ -57,7 +57,8 @@ pub async fn register(
         .await
         .map_err(|e| {
             warn!(email = new_user.email, "failed to register new user: {}", e);
-            APIErrorBuilder::error(UserAlreadyExists)
+            APIErrorBuilder::new(UserAlreadyExists)
+                .cause(e)
                 .detail("If you already have an account, try logging in.")
                 .with_field("email", new_user.email.into())
                 .build()
@@ -104,14 +105,14 @@ pub async fn login(
 
     if !password_matches {
         info!(email = payload.email, "failed to login");
-        return Err(APIErrorBuilder::error(LoginIncorrect)
+        return Err(APIErrorBuilder::new(LoginIncorrect)
             .with_field("email", payload.email.into())
             .build());
     }
 
     let unwrapped_user = user.map_err(|e| {
         warn!(error = %e, "database error when logging in. This should never happen.");
-        APIErrorBuilder::error(Unknown).build()
+        APIErrorBuilder::from_error(e).build()
     })?;
 
     let refresh_token = diesel::insert_into(crate::db::schema::refresh_tokens::table)
@@ -122,7 +123,7 @@ pub async fn login(
         .await
         .map_err(|e| {
             error!(error = %e, "failed to insert refresh token");
-            APIErrorBuilder::error(Unknown).build()
+            APIErrorBuilder::from_error(e).build()
         })?;
 
     Ok((
@@ -130,7 +131,7 @@ pub async fn login(
         Json(AuthResponse {
             access_token: generate_auth_token(&unwrapped_user).map_err(|e| {
                 error!(error = %e, "failed to generate auth token");
-                APIErrorBuilder::error(Unknown).build()
+                APIErrorBuilder::from_error(e).build()
             })?,
             refresh_token: refresh_token.id.to_string(),
         }),

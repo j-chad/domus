@@ -1,3 +1,4 @@
+use crate::api::error::ErrorType::Unknown;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
@@ -5,6 +6,7 @@ use const_format::concatcp;
 use serde::{Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
+use std::fmt::Display;
 use thiserror::Error;
 use tracing::error;
 use utoipa::ToSchema;
@@ -110,12 +112,12 @@ pub struct APIError {
 impl From<ErrorType> for APIError {
     fn from(value: ErrorType) -> Self {
         if let ErrorType::ForeignError(e) = &value {
-            return APIErrorBuilder::error(value)
+            return APIErrorBuilder::new(value)
                 .with_field("cause", format!("{}", e).into())
                 .build();
         }
 
-        return APIErrorBuilder::error(value).build();
+        return APIErrorBuilder::new(value).build();
     }
 }
 
@@ -157,13 +159,27 @@ impl APIErrorBuilder {
     /// Create a new APIErrorBuilder with the given error type.
     ///
     /// This is the recommended way to create an APIErrorBuilder.
-    pub fn error(error: ErrorType) -> Self {
+    pub fn new(error: ErrorType) -> Self {
         Self {
             error_type: error,
             detail: None,
             instance: None,
             extra: None,
         }
+    }
+
+    /// Create a new unknown error from the given error.
+    ///
+    /// This is a shorthand for `APIErrorBuilder::new(Unknown).cause(error)`.
+    pub fn from_error(error: impl Display) -> Self {
+        Self::new(Unknown).cause(error)
+    }
+
+    /// Adds a cause field to the error.
+    ///
+    /// Shorthand for `with_field("cause", error.to_string().into())`.
+    pub fn cause(self, error: impl Display) -> Self {
+        self.with_field("cause", error.to_string().into())
     }
 
     /// Add additional information to the error.
@@ -219,7 +235,7 @@ impl APIErrorBuilder {
 
 impl Default for APIErrorBuilder {
     fn default() -> Self {
-        Self::error(ErrorType::Unknown)
+        Self::new(ErrorType::Unknown)
     }
 }
 
