@@ -4,7 +4,7 @@ use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHasher, PasswordVerifier};
 use pasetors::claims::Claims;
 use pasetors::errors::Error as ClaimError;
-use pasetors::keys::{AsymmetricKeyPair, Generate};
+use pasetors::keys::AsymmetricSecretKey;
 use pasetors::public;
 use pasetors::version4::V4;
 use std::time::Duration;
@@ -29,15 +29,13 @@ pub fn hash_password(password: &str) -> Result<String, argon2::password_hash::Er
     Ok(password_hash.to_string())
 }
 
-pub fn generate_auth_token(user: &User) -> Result<String, ClaimError> {
+pub fn generate_auth_token(user: &User, private_key: &str) -> Result<String, ClaimError> {
     let mut claims = Claims::new_expires_in(&TOKEN_EXPIRY_TIME)?;
     claims.issuer("domus-api.jacksonc.dev")?;
     claims.subject(user.id.as_hyphenated().to_string().as_str())?;
     claims.audience("domus.jacksonc.dev")?;
     claims.token_identifier(Uuid::new_v4().to_string().as_str())?;
 
-    // Generate the keys and sign the claims.
-    // TODO: store the private key elsewhere and don't generate it every time.
-    let kp = AsymmetricKeyPair::<V4>::generate()?;
-    public::sign(&kp.secret, &claims, None, None)
+    let key = AsymmetricSecretKey::<V4>::try_from(private_key)?;
+    public::sign(&key, &claims, None, None)
 }

@@ -132,10 +132,11 @@ pub async fn login(
     Ok((
         StatusCode::OK,
         Json(AuthResponse {
-            access_token: generate_auth_token(&unwrapped_user).map_err(|e| {
-                error!(error = %e, "failed to generate auth token");
-                APIErrorBuilder::from_error(e).build()
-            })?,
+            access_token: generate_auth_token(&unwrapped_user, &state.settings.auth.private_key)
+                .map_err(|e| {
+                    error!(error = %e, "failed to generate auth token");
+                    APIErrorBuilder::from_error(e).build()
+                })?,
             refresh_token: refresh_token.id.to_string(),
         }),
     ))
