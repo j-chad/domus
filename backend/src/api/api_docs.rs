@@ -1,10 +1,12 @@
 use super::auth::controllers as auth_routes;
 use super::auth::models as auth_models;
 use super::error;
-use utoipa::OpenApi;
+use utoipa::openapi::security::{HttpAuthScheme, HttpBuilder, SecurityScheme};
+use utoipa::{Modify, OpenApi};
 
 #[derive(OpenApi)]
 #[openapi(
+	modifiers(&SecurityAddon),
 	info(title="Domus API"),
 	servers((url="/v1/")),
 	paths(
@@ -26,3 +28,25 @@ use utoipa::OpenApi;
 	)
 )]
 pub struct ApiDocs {}
+
+struct SecurityAddon;
+
+impl Modify for SecurityAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        openapi
+            .components
+            .as_mut()
+            .unwrap()
+            .security_schemes
+            .insert(
+                "api_token".to_string(),
+                SecurityScheme::Http(
+                    HttpBuilder::new()
+                        .scheme(HttpAuthScheme::Bearer)
+                        .bearer_format("PASETO")
+                        .description(Some("PASETO token"))
+                        .build(),
+                ),
+            );
+    }
+}

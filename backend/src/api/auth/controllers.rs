@@ -56,7 +56,10 @@ pub async fn register(
         .get_result(&mut conn)
         .await
         .map_err(|e| {
-            warn!(email = new_user.email, "failed to register new user: {}", e);
+            warn!(
+                email = new_user.email,
+                "failed to register new user: {:?}", e
+            );
             APIErrorBuilder::new(UserAlreadyExists)
                 .cause(e)
                 .detail("If you already have an account, try logging in.")
@@ -175,6 +178,9 @@ pub async fn refresh_token() -> impl IntoResponse {
     get,
     path = "/auth/user",
     tag = "auth",
+    security(
+        ("api_token" = [])
+    ),
     responses(
         (status = 200, description = "Success", body = UserResponse),
         (status = 401, description = "User not signed in", body = APIError),

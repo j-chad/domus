@@ -5,7 +5,7 @@ use const_format::concatcp;
 use serde::{Serialize, Serializer};
 use serde_json::Value;
 use std::collections::HashMap;
-use std::fmt::{Debug, Display};
+use std::fmt::Debug;
 use thiserror::Error;
 use tracing::error;
 use utoipa::ToSchema;
