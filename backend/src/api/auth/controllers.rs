@@ -1,22 +1,22 @@
-use super::models::{RegisterNewUserRequest, UserResponse};
-use crate::api::auth::models::{AuthResponse, LoginUserRequest};
-use crate::api::auth::utils::{
-    create_new_user, generate_auth_token, generate_auth_tokens, generate_new_refresh_token,
-    hash_password, verify_password,
+use super::models::RegisterNewUserRequest;
+use crate::{
+    api::{
+        auth::models::{AuthResponse, LoginUserRequest},
+        auth::utils::{
+            create_new_user, find_user_by_email, generate_auth_tokens, hash_password,
+            verify_password,
+        },
+        error::{
+            APIError, APIErrorBuilder,
+            ErrorType::{LoginIncorrect, Unknown},
+        },
+        utils::db::get_db_connection,
+    },
+    db::user::NewUser,
+    AppState,
 };
-use crate::api::error::ErrorType::{LoginIncorrect, UserAlreadyExists};
-use crate::api::error::{APIError, APIErrorBuilder};
-use crate::api::utils::db::get_db_connection;
-use crate::db::refresh_token::{NewRefreshToken, RefreshToken};
-use crate::db::schema::users;
-use crate::db::user::{NewUser, User};
-use crate::AppState;
-use axum::extract::State;
-use axum::{http::StatusCode, response::IntoResponse, Json};
-use diesel::prelude::*;
-use diesel::SelectableHelper;
-use diesel_async::RunQueryDsl;
-use tracing::{error, info, warn};
+use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use tracing::{error, info};
 
 /// Register a new user
 #[utoipa::path(
@@ -79,13 +79,10 @@ pub async fn login(
 
     let mut conn = get_db_connection(&state.database_pool).await?;
 
-    let user: Result<User, diesel::result::Error> = User::all()
-        .filter(User::by_email(&payload.email))
-        .first(&mut conn)
-        .await;
+    let user = find_user_by_email(&mut conn, &payload.email).await?;
 
     let password_matches: bool = match user {
-        Ok(ref user) => verify_password(&payload.password, &user.password).is_ok(),
+        Some(ref user) => verify_password(&payload.password, &user.password).is_ok(),
         _ => {
             // Prevent timing side channel attacks by always taking the same amount of time to verify a password.
             let _ = verify_password("", "").is_ok();
@@ -100,33 +97,14 @@ pub async fn login(
             .build());
     }
 
-    let unwrapped_user = user.map_err(|e| {
-        warn!(error = %e, "database error when logging in. This should never happen.");
-        APIErrorBuilder::from_error(e).build()
+    let user = user.ok_or_else(|| {
+        error!("User not found after logging in. This should never happen.");
+        APIErrorBuilder::new(Unknown).build()
     })?;
 
-    let refresh_token = diesel::insert_into(crate::db::schema::refresh_tokens::table)
-        .values(&NewRefreshToken {
-            user_id: unwrapped_user.id,
-        })
-        .get_result::<RefreshToken>(&mut conn)
-        .await
-        .map_err(|e| {
-            error!(error = %e, "failed to insert refresh token");
-            APIErrorBuilder::from_error(e).build()
-        })?;
+    let tokens = generate_auth_tokens(&mut conn, &user, &state.settings.auth.private_key).await?;
 
-    Ok((
-        StatusCode::OK,
-        Json(AuthResponse {
-            access_token: generate_auth_token(&unwrapped_user, &state.settings.auth.private_key)
-                .map_err(|e| {
-                    error!(error = %e, "failed to generate auth token");
-                    APIErrorBuilder::from_error(e).build()
-                })?,
-            refresh_token: refresh_token.id.to_string(),
-        }),
-    ))
+    Ok((StatusCode::OK, Json(tokens)))
 }
 
 /// Logout the current user

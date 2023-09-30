@@ -8,6 +8,7 @@ use crate::db::user::{NewUser, User};
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHasher, PasswordVerifier};
+use diesel::prelude::*;
 use diesel::SelectableHelper;
 use diesel_async::RunQueryDsl;
 use pasetors::claims::Claims;
@@ -88,6 +89,21 @@ pub async fn generate_new_refresh_token(
         .await
         .map_err(|e| {
             error!(error = %e, "failed to insert refresh token");
+            APIErrorBuilder::from_error(e).build()
+        })
+}
+
+pub async fn find_user_by_email(
+    conn: &mut Connection,
+    email: &str,
+) -> Result<Option<User>, APIError> {
+    User::all()
+        .filter(User::by_email(email))
+        .first(conn)
+        .await
+        .optional()
+        .map_err(|e| {
+            error!(error = %e, "failed to find user by email");
             APIErrorBuilder::from_error(e).build()
         })
 }
