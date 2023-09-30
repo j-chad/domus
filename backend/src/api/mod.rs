@@ -1,7 +1,12 @@
-use actix_web::web;
+use crate::AppState;
+use axum::Router;
 
-mod auth;
+pub mod api_docs;
+pub mod auth;
+mod error;
+mod middleware;
+mod utils;
 
-pub fn configure(cfg: &mut web::ServiceConfig) {
-    auth::configure(cfg);
+pub fn get_router(state: AppState) -> Router<AppState> {
+    Router::new().nest("/auth", auth::get_router(state))
 }

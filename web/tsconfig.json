@@ -1,5 +1,10 @@
 {
-	"extends": "./.svelte-kit/tsconfig.json",
+	"extends": [
+		"@tsconfig/strictest/tsconfig.json",
+		"@tsconfig/svelte/tsconfig.json",
+		"./.svelte-kit/tsconfig.json"
+	],
+
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
@@ -8,19 +13,7 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-
-		// These are recommended settings for stricter type checking
-		"strict": true,
-		"allowUnreachableCode": false,
-		"allowUnusedLabels": false,
-		"alwaysStrict": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
+		"strict": true
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
