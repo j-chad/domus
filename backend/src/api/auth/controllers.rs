@@ -1,5 +1,7 @@
 use super::models::RegisterNewUserRequest;
-use crate::api::auth::models::UserResponse;
+use crate::api::auth::models::{RefreshTokenRequest, UserResponse};
+use crate::api::auth::utils::{find_refresh_token, find_user_by_id};
+use crate::api::error::ErrorType::Unauthorized;
 use crate::api::middleware::CurrentUser;
 use crate::api::utils::friendly_id::{ItemIdType, ToFriendlyId};
 use crate::{
@@ -135,11 +137,27 @@ pub async fn logout() -> impl IntoResponse {
         content = RefreshTokenRequest
     ),
     responses(
-        (status = 501, description = "Not Implemented")
+
     )
 )]
-pub async fn refresh_token() -> impl IntoResponse {
-    StatusCode::NOT_IMPLEMENTED
+pub async fn refresh_token(
+    State(state): State<AppState>,
+    Json(payload): Json<RefreshTokenRequest>,
+) -> Result<(StatusCode, Json<AuthResponse>), APIError> {
+    let mut conn = get_db_connection(&state.database_pool).await?;
+
+    let token = find_refresh_token(&mut conn, &payload.refresh_token).await?;
+    let token = token.filter(|token| !token.is_expired()).ok_or(
+        APIErrorBuilder::new(Unauthorized)
+            .detail("The token you provided is expired.")
+            .build(),
+    )?;
+
+    let user = find_user_by_id(&mut conn, &token.user_id).await?;
+
+    let tokens = generate_auth_tokens(&mut conn, &user, &state.settings.auth.private_key).await?;
+
+    Ok((StatusCode::OK, Json(tokens)))
 }
 
 /// Get the current user

@@ -12,6 +12,12 @@ pub struct RefreshToken {
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
+impl RefreshToken {
+    pub(crate) fn is_expired(&self) -> bool {
+        self.expires_at < chrono::Utc::now().naive_utc()
+    }
+}
+
 #[derive(Insertable)]
 #[diesel(table_name = crate::db::schema::refresh_tokens)]
 pub struct NewRefreshToken {

@@ -1,5 +1,5 @@
 use crate::api::auth::models::AuthResponse;
-use crate::api::error::ErrorType::UserAlreadyExists;
+use crate::api::error::ErrorType::{Unauthorized, UserAlreadyExists};
 use crate::api::error::{APIError, APIErrorBuilder};
 use crate::db::database::Connection;
 use crate::db::refresh_token::{NewRefreshToken, RefreshToken};
@@ -136,6 +136,35 @@ pub async fn find_user_by_email(
             error!(error = %e, "failed to find user by email");
             APIErrorBuilder::from_error(e).build()
         })
+}
+
+pub async fn find_user_by_id(conn: &mut Connection, id: &Uuid) -> Result<User, APIError> {
+    User::all().find(id).first(conn).await.map_err(|e| {
+        error!(error = %e, "failed to find user by id");
+        APIErrorBuilder::from_error(e).build()
+    })
+}
+
+pub async fn find_refresh_token(
+    conn: &mut Connection,
+    refresh_token: &str,
+) -> Result<Option<RefreshToken>, APIError> {
+    let uuid = Uuid::parse_str(refresh_token).map_err(|e| {
+        warn!(error = %e, "failed to parse refresh token");
+        APIErrorBuilder::new(Unauthorized)
+            .cause(e)
+            .detail("The token you provided is invalid.")
+            .build()
+    })?;
+
+    let token: Option<RefreshToken> = refresh_tokens::table
+        .filter(refresh_tokens::id.eq(uuid))
+        .first::<RefreshToken>(conn)
+        .await
+        .optional()
+        .map_err(|e| APIErrorBuilder::from_error(e).build())?;
+
+    Ok(token)
 }
 
 fn generate_auth_token(user: &User, private_key: &str) -> Result<String, ClaimError> {
