@@ -14,8 +14,6 @@ use tower_http::LatencyUnit;
 use tracing::Level;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
-use utoipa::OpenApi;
-use utoipa_swagger_ui::SwaggerUi;
 
 pub struct AppStateInternal {
     pub database_pool: database::ConnectionPool,
@@ -55,10 +53,7 @@ async fn main() {
     let state = Arc::new(AppStateInternal::new(config.clone()));
 
     let app = Router::new()
-        .merge(
-            SwaggerUi::new("/swagger-ui")
-                .url("/api-docs/openapi.json", api_docs::ApiDocs::openapi()),
-        )
+        .merge(api_docs::get_swagger_ui())
         .nest("/v1", api::get_router(state.clone()))
         .fallback(fallback)
         .layer(

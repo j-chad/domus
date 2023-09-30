@@ -3,6 +3,7 @@ use super::auth::models as auth_models;
 use super::error;
 use utoipa::openapi::security::{HttpAuthScheme, HttpBuilder, SecurityScheme};
 use utoipa::{Modify, OpenApi};
+use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(OpenApi)]
 #[openapi(
@@ -49,4 +50,16 @@ impl Modify for SecurityAddon {
                 ),
             );
     }
+}
+
+pub fn get_swagger_ui() -> SwaggerUi {
+    SwaggerUi::new("/swagger-ui")
+        .url("/api-docs/openapi.json", ApiDocs::openapi())
+        .config(
+            utoipa_swagger_ui::Config::from("/api-docs/openapi.json")
+                .display_request_duration(true)
+                .filter(true)
+                .request_snippets_enabled(true)
+                .persist_authorization(true),
+        )
 }
