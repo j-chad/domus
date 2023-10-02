@@ -1,11 +1,13 @@
 module.exports = {
-	root: true,
-	env: {
+    root: true,
+
+    env: {
 		browser: true,
 		es2017: true,
 		node: true
 	},
-	overrides: [
+
+    overrides: [
 		{
 			files: ['*.svelte'],
 			parser: 'svelte-eslint-parser',
@@ -36,5 +38,7 @@ module.exports = {
 				'prettier'
 			]
 		}
-	]
+	],
+
+    extends: ['plugin:storybook/recommended']
 };
